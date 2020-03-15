@@ -125,3 +125,8 @@ body {
 .register {
     margin-top: 1em;
 }
+
+mat-progress-spinner {
+    position: relative;
+    left: 35%;
+}
