@@ -45,7 +45,7 @@ body {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     z-index: 5;
-    max-width: 330px;
+    max-width: 40%;
 }
 
 .box.back {
@@ -101,8 +101,10 @@ body {
 
 .login-wrapper .mat-stroked-button {
     border: 1px solid currentColor;
-    line-height: 24px;
+    line-height: 35px;
+    float: right;
     background: #FFF7FA;
+    width: 140px;
 }
 
 .login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
@@ -110,8 +112,8 @@ body {
 }
 
 .logoMRed {
-    width: 40%;
-    padding-left: 6.5em;
+    width: 10%;
+    padding-left: 1em;
 }
 
 .cadastroHeader {
@@ -120,4 +122,16 @@ body {
 
 ::ng-deep .mat-step-header .mat-step-icon {
     background-color: #E4022D;
+}
+
+.registerTitle {
+    float: right;
+    /* position: relative; */
+    /* right: 65%; */
+    font-size: 30px;
+    padding-top: 1em;
+}
+
+mat-form-field {
+    padding-right: 1%;
 }

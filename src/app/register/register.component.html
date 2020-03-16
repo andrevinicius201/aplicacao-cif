@@ -1,5 +1,127 @@
 <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
     <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Cadastro Aplicação CIF</mat-card-title>
+        </mat-card-header>
+
+        <mat-horizontal-stepper linear="true" #stepper>
+            <mat-step [stepControl]="personForm">
+                <form #personForm="ngForm">
+                    <ng-template matStepLabel>Informações pessoais</ng-template>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput placeholder="Senha" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Nome</mat-label>
+                        <input matInput placeholder="Nome" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Sobrenome</mat-label>
+                        <input matInput placeholder="Sobrenome" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Gênero</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                                {{gender.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Celular</mat-label>
+                        <input matInput placeholder="Celular" minlength="9" maxlength="9" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Data de Nascimento</mat-label>
+                        <input matInput [matDatepicker]="picker" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="nextStep">
+                        <button mat-button mat-button [disabled]="!personForm.form.valid" matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                            <mat-icon>double_arrow</mat-icon>
+                            Próximo
+                            <mat-icon>double_arrow</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="addressForm">
+                <form #addressForm="ngForm">
+                    <ng-template matStepLabel>Informações residênciais</ng-template>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput placeholder="Senha" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Nome</mat-label>
+                        <input matInput placeholder="Nome" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Sobrenome</mat-label>
+                        <input matInput placeholder="Sobrenome" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Gênero</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                                {{gender.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Celular</mat-label>
+                        <input matInput placeholder="Celular" minlength="9" maxlength="9" required>
+                    </mat-form-field>
+                    <div class="nextStep">
+                        <button mat-button mat-button [disabled]="!personForm.form.valid" matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                            <mat-icon>double_arrow</mat-icon>
+                            Próximo
+                            <mat-icon>double_arrow</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <p>You are now done.</p>
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="stepper.reset()">Reset</button>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <mat-card class="box">
         <img mat-card-md-image src="../../assets/images/mackIcon/M_vermelho.png" class="logoMRed" alt="Logo isolado do Mackenzie">
         <mat-card-header class="cadastroHeader">
             <mat-card-title>Cadastro</mat-card-title>
@@ -53,7 +175,7 @@
         </mat-vertical-stepper>
 
 
-        <!-- <form class="example-form">
+        <form class="example-form">
 
             <mat-card-content>
                 <mat-form-field class="example-full-width">
@@ -79,6 +201,5 @@
             </mat-card-content>
 
             <button mat-stroked-button color="warn" class="btn-block">Register</button>
-        </form> -->
-    </mat-card>
-</div>
+        </form>
+</mat-card> -->
