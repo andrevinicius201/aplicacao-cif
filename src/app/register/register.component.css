@@ -135,3 +135,16 @@ body {
 mat-form-field {
     padding-right: 1%;
 }
+
+.btn-done {
+    background-color: rgb(239, 239, 255) !important;
+}
+
+.btn-clean {
+    float: left !important;
+}
+
+.cepNF {
+    font-size: 10px;
+    color: red;
+}

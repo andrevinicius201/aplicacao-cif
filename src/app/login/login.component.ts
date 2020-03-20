@@ -19,15 +19,14 @@ export class LoginComponent implements OnInit {
 
   @Input() person: Person = <Person>{};
   @Output() id: EventEmitter<string> = new EventEmitter();
-  constructor(private authService: AuthService ,private router: Router, private snackbar: MatSnackBar,  private sessionService: SessionService) { }
+  constructor(private authService: AuthService, private router: Router, private snackbar: MatSnackBar, private sessionService: SessionService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
     this.loading = true;
-    if( this.person.email.match('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$') ) {
-      this.authService.patientLogin(this.person.email, this.person.password)
+    this.authService.login(this.person.login, this.person.password)
       .subscribe(
         res => {
           this.loading = false;
@@ -37,16 +36,15 @@ export class LoginComponent implements OnInit {
         }, error => {
           this.loading = false;
           console.log(error);
-          this.snackbar.open('Email ou Senha incorreto!', 'Dismiss', {
+          this.snackbar.open('Login ou Senha incorreto!', 'Dismiss', {
             duration: 2000,
             panelClass: ['error-snackbar']
           });
         }
       );
-    }
   }
 
-  toRegister(){
+  toRegister() {
     this.router.navigateByUrl('/register');
   }
 }
