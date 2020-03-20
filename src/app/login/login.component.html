@@ -11,7 +11,7 @@
         <form class="login-form" #loginForm="ngForm" (ngSubmit)="onSubmit()">
             <mat-card-content>
                 <mat-form-field class="login-full-width">
-                    <input matInput placeholder="Email ou Crefito" id="email" #email="ngModel" name="email" [(ngModel)]="person.email" required>
+                    <input matInput placeholder="Email ou CPF" id="login" #login="ngModel" name="login" [(ngModel)]="person.login" required>
                 </mat-form-field>
 
                 <mat-form-field class="login-full-width">

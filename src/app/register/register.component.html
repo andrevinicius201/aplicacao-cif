@@ -6,47 +6,62 @@
 
         <mat-horizontal-stepper linear="true" #stepper>
             <mat-step [stepControl]="personForm">
-                <form #personForm="ngForm">
-                    <ng-template matStepLabel>Informações pessoais</ng-template>
-                    <mat-form-field>
-                        <mat-label>Email</mat-label>
-                        <input matInput placeholder="Email" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Senha</mat-label>
-                        <input matInput placeholder="Senha" required>
-                    </mat-form-field>
-                    <br>
+                <form [formGroup]="personForm">
+                    <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
                         <mat-label>Nome</mat-label>
-                        <input matInput placeholder="Nome" required>
+                        <input matInput placeholder="Nome" formControlName="firstName" required>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Sobrenome</mat-label>
-                        <input matInput placeholder="Sobrenome" required>
+                        <input matInput placeholder="Sobrenome" formControlName="lastName" required>
                     </mat-form-field>
                     <br>
                     <mat-form-field>
+                        <mat-label>CPF</mat-label>
+                        <input matInput placeholder="CPF" formControlName="cpf" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" type="email" formControlName="email" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput placeholder="Senha" type="password" formControlName="password" required>
+                        <div *ngIf="!equalPass">
+                            <p class="cepNF">Senhas não correspondem!</p>
+                        </div>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Confirmar Senha</mat-label>
+                        <input matInput placeholder="Senha" (change)="validatePass()" type="password" formControlName="confirmPass" required>
+                        <div *ngIf="!equalPass">
+                            <p class="cepNF">Senhas não correspondem!</p>
+                        </div>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Celular</mat-label>
+                        <input matInput placeholder="Celular" formControlName="telephoneNumber" required>
+                    </mat-form-field>
+                    <mat-form-field>
                         <mat-label>Gênero</mat-label>
-                        <mat-select>
+                        <mat-select formControlName="sex">
                             <mat-option *ngFor="let gender of genders" [value]="gender.value">
                                 {{gender.viewValue}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Celular</mat-label>
-                        <input matInput placeholder="Celular" minlength="9" maxlength="9" required>
-                    </mat-form-field>
                     <br>
                     <mat-form-field>
                         <mat-label>Data de Nascimento</mat-label>
-                        <input matInput [matDatepicker]="picker" required>
+                        <input matInput [matDatepicker]="picker" required formControlName="birthDate">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button mat-button mat-button [disabled]="!personForm.form.valid" matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
                             <mat-icon>double_arrow</mat-icon>
                             Próximo
                             <mat-icon>double_arrow</mat-icon>
@@ -55,151 +70,56 @@
                 </form>
             </mat-step>
             <mat-step [stepControl]="addressForm">
-                <form #addressForm="ngForm">
-                    <ng-template matStepLabel>Informações residênciais</ng-template>
+                <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+                    <ng-template matStepLabel>Dados Residênciais</ng-template>
                     <mat-form-field>
-                        <mat-label>Email</mat-label>
-                        <input matInput placeholder="Email" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Senha</mat-label>
-                        <input matInput placeholder="Senha" required>
-                    </mat-form-field>
-                    <br>
-                    <mat-form-field>
-                        <mat-label>Nome</mat-label>
-                        <input matInput placeholder="Nome" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Sobrenome</mat-label>
-                        <input matInput placeholder="Sobrenome" required>
+                        <mat-label>CEP</mat-label>
+                        <input matInput placeholder="CEP" (change)="searchCEP()" formControlName="postalCode" required>
+                        <div *ngIf="cepNotFound">
+                            <p class="cepNF">CEP não encontrado!</p>
+                        </div>
                     </mat-form-field>
                     <br>
                     <mat-form-field>
-                        <mat-label>Gênero</mat-label>
-                        <mat-select>
-                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
-                                {{gender.viewValue}}
+                        <mat-label>Rua</mat-label>
+                        <input matInput placeholder="Rua" formControlName="publicPlace" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Número</mat-label>
+                        <input matInput placeholder="Senha" formControlName="houseNumber" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Bairro</mat-label>
+                        <input matInput placeholder="Nome" formControlName="neighborhood" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Cidade</mat-label>
+                        <input matInput placeholder="Sobrenome" formControlName="city" required>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field>
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="state">
+                            <mat-option *ngFor="let state of states" [value]="state">
+                                {{state}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Celular</mat-label>
-                        <input matInput placeholder="Celular" minlength="9" maxlength="9" required>
-                    </mat-form-field>
                     <div class="nextStep">
-                        <button mat-button mat-button [disabled]="!personForm.form.valid" matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
-                            <mat-icon>double_arrow</mat-icon>
-                            Próximo
-                            <mat-icon>double_arrow</mat-icon>
+                        <button mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-clean">
+                            <mat-icon>clear_all</mat-icon>
+                            Limpar
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                        <button mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-done">
+                            <mat-icon>done_all</mat-icon>
+                            Concluir
+                            <mat-icon>done_all</mat-icon>
                         </button>
                     </div>
                 </form>
             </mat-step>
-            <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
-                <p>You are now done.</p>
-                <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset()">Reset</button>
-                </div>
-            </mat-step>
         </mat-horizontal-stepper>
     </mat-card>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <mat-card class="box">
-        <img mat-card-md-image src="../../assets/images/mackIcon/M_vermelho.png" class="logoMRed" alt="Logo isolado do Mackenzie">
-        <mat-card-header class="cadastroHeader">
-            <mat-card-title>Cadastro</mat-card-title>
-        </mat-card-header>
-        <mat-vertical-stepper color="warn">
-            <mat-step [stepControl]="personFormGroup">
-                <form #personFormGroup="ngForm">
-                    <ng-template matStepLabel>Informações pessoais</ng-template>
-                    <mat-form-field>
-                        <mat-label>Email</mat-label>
-                        <input matInput placeholder="Email" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Senha</mat-label>
-                        <input matInput placeholder="Senha" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Nome</mat-label>
-                        <input matInput placeholder="Nome" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Sobrenome</mat-label>
-                        <input matInput placeholder="Sobrenome" required>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Data de Nascimento</mat-label>
-                        <input matInput [matDatepicker]="picker" required>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Gênero</mat-label>
-                        <mat-select>
-                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
-                                {{gender.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Celular</mat-label>
-                        <input matInput placeholder="Celular" minlength="9" maxlength="9" required>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button [disabled]="!personFormGroup.form.valid" matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step label="Step 1">
-                Content 2
-            </mat-step>
-        </mat-vertical-stepper>
-
-
-        <form class="example-form">
-
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Username">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Email">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Password">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                    <mat-label>Função</mat-label>
-                    <mat-select>
-                        <mat-option [value]="roles" *ngFor="let roles of Roles">{{roles}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-            </mat-card-content>
-
-            <button mat-stroked-button color="warn" class="btn-block">Register</button>
-        </form>
-</mat-card> -->
