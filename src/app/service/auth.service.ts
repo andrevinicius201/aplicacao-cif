@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders,HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Patient } from '../interfaces/patient';
+import { Person } from '../interfaces/person';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class AuthService {
     const url = `${environment.personBaseUrl}/v1/person/login`;
 
     let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');    
+    headers.append('Content-Type', 'application/json');
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -26,6 +26,6 @@ export class AuthService {
         'password': password
       })
     };
-    return this.http.get<Patient>(url, httpOptions);
+    return this.http.get<Person>(url, httpOptions);
   }
 }
