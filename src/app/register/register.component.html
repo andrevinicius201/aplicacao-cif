@@ -16,7 +16,7 @@
                         <mat-label>Sobrenome</mat-label>
                         <input matInput placeholder="Sobrenome" formControlName="lastName" required>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>CPF</mat-label>
                         <input matInput placeholder="CPF" formControlName="cpf" required>
@@ -25,7 +25,7 @@
                         <mat-label>Email</mat-label>
                         <input matInput placeholder="Email" type="email" formControlName="email" required>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Senha</mat-label>
                         <input matInput placeholder="Senha" type="password" formControlName="password" required>
@@ -40,7 +40,7 @@
                             <p class="cepNF">Senhas não correspondem!</p>
                         </div>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Celular</mat-label>
                         <input matInput placeholder="Celular" formControlName="telephoneNumber" required>
@@ -53,7 +53,7 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Data de Nascimento</mat-label>
                         <input matInput [matDatepicker]="picker" required formControlName="birthDate">
@@ -79,7 +79,7 @@
                             <p class="cepNF">CEP não encontrado!</p>
                         </div>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Rua</mat-label>
                         <input matInput placeholder="Rua" formControlName="publicPlace" required>
@@ -88,7 +88,7 @@
                         <mat-label>Número</mat-label>
                         <input matInput placeholder="Senha" formControlName="houseNumber" required>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Bairro</mat-label>
                         <input matInput placeholder="Nome" formControlName="neighborhood" required>
@@ -97,7 +97,7 @@
                         <mat-label>Cidade</mat-label>
                         <input matInput placeholder="Sobrenome" formControlName="city" required>
                     </mat-form-field>
-                    <br>
+
                     <mat-form-field>
                         <mat-label>Estado</mat-label>
                         <mat-select formControlName="state">
@@ -107,12 +107,12 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-clean">
+                        <button mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
                             <mat-icon>clear_all</mat-icon>
                             Limpar
                             <mat-icon>clear_all</mat-icon>
                         </button>
-                        <button mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-done">
+                        <button mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
                             <mat-icon>done_all</mat-icon>
                             Concluir
                             <mat-icon>done_all</mat-icon>
