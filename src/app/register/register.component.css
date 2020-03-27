@@ -45,7 +45,7 @@ body {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     z-index: 5;
-    max-width: 40%;
+    max-width: 600px;
 }
 
 .box.back {

@@ -26,6 +26,7 @@ import {
   MatSnackBarModule,
   MatProgressSpinnerModule,
   MatStepperModule,
+  MatMenuModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -33,6 +34,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SessionService } from './service/session.service';
+import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -40,7 +42,7 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,8 @@ import { HomeComponent } from './home/home.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatStepperModule,
+    MatMenuModule,
+    LayoutModule,
   ],
   providers: [
     SessionService,

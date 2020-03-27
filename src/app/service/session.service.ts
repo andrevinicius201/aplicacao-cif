@@ -1,11 +1,12 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SessionService {
   public userId: string;
 
 
-  constructor() { }
+  constructor(private route: Router) { }
 
   getUserLogged() {
     const userId = localStorage.getItem('user');
@@ -23,5 +24,6 @@ export class SessionService {
   logoutUser() {
     localStorage.removeItem('user');
     this.userId = '';
+    this.route.navigate(['']);
   }
 }
