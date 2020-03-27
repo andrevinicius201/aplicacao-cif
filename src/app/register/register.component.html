@@ -19,11 +19,11 @@
 
                     <mat-form-field>
                         <mat-label>CPF</mat-label>
-                        <input matInput placeholder="CPF" formControlName="cpf" required>
+                        <input matInput placeholder="CPF" #cpf formControlName="cpf" required>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Email</mat-label>
-                        <input matInput placeholder="Email" type="email" formControlName="email" required>
+                        <input matInput placeholder="Email" #email type="email" formControlName="email" required>
                     </mat-form-field>
 
                     <mat-form-field>
@@ -107,16 +107,17 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
+                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
                             <mat-icon>clear_all</mat-icon>
                             Limpar
                             <mat-icon>clear_all</mat-icon>
                         </button>
-                        <button mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
                             <mat-icon>done_all</mat-icon>
                             Concluir
                             <mat-icon>done_all</mat-icon>
                         </button>
+                        <mat-progress-spinner *ngIf="loading" class="example-margin" mode="indeterminate" color="warn"></mat-progress-spinner>
                     </div>
                 </form>
             </mat-step>
