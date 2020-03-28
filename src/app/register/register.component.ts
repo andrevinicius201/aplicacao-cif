@@ -110,6 +110,9 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.sessionService.getUserLogged() != null){
+      return this.router.navigate(['home']);
+    }
   }
 
   onSubmit() {

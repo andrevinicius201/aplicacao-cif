@@ -22,6 +22,9 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router, private snackbar: MatSnackBar, private sessionService: SessionService) { }
 
   ngOnInit() {
+    if(this.sessionService.getUserLogged() != null){
+      return this.router.navigate(['home']);
+    }
   }
 
   onSubmit() {
@@ -30,7 +33,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         res => {
           this.loading = false;
-          this.sessionService.saveUserLoggedId(res.id)
+          this.sessionService.saveUserLoggedId(res.id, res.firstName);
           console.log('successful login!');
           this.router.navigate(['home']);
         }, error => {
