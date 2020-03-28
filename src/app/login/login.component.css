@@ -129,3 +129,9 @@ mat-progress-spinner {
     position: relative;
     left: 35%;
 }
+
+@media(max-width: 480px) {
+    .box {
+        height: 90%;
+    }
+}
