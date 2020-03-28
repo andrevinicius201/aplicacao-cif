@@ -61,10 +61,10 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block btn-cancel">
-                            <mat-icon>double_arrow</mat-icon>
+                        <button mat-button mat-button (click)="goBack2Login()" mat-stroked-button type="submit" color="warn" class="btn-block btn-cancel">
+                            <mat-icon>remove_circle_outline</mat-icon>
                             Cancelar
-                            <mat-icon>double_arrow</mat-icon>
+                            <mat-icon>remove_circle_outline</mat-icon>
                         </button>
                         <span class="spacer"></span>
                         <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
