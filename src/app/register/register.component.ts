@@ -115,6 +115,10 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  goBack2Login(){
+    this.router.navigate(['']);
+  }
+
   onSubmit() {
     this.person = this.personForm.value;
     this.address = this.addressForm.value;
