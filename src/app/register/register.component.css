@@ -160,6 +160,13 @@ mat-form-field {
 
 @media(max-width: 645px) {
     .btn-cancel {
+        margin-right: 0;
+    }
+    .login-wrapper .mat-stroked-button {
+        width: 225px;
+        margin-bottom: 5%;
+    }
+    .btn-clean {
         margin-bottom: 5%;
     }
 }
