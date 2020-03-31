@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   loading = false
 
   @Input() person: Person = <Person>{};
-  @Output() id: EventEmitter<string> = new EventEmitter();
+  @Output() personOut: EventEmitter<Person> = new EventEmitter();
   constructor(private authService: AuthService, private router: Router, private snackbar: MatSnackBar, private sessionService: SessionService) { }
 
   ngOnInit() {
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           this.sessionService.saveUserLoggedId(res.id, res.firstName);
           console.log('successful login!');
+          this.personOut.emit(this.person);
           this.router.navigate(['home']);
         }, error => {
           this.loading = false;
