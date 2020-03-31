@@ -67,12 +67,6 @@ mat-icon.icon-side-menu {
     top: 15px;
 }
 
-@media(max-width: 768px) {
-    .greeting-span {
-        display: none;
-    }
-}
-
 .mack-white-icon {
     padding-right: 10px;
 }

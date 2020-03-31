@@ -6,6 +6,7 @@ import { SessionService } from './service/session.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { HomeComponent } from './home/home.component';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./app.component.css'],
 
 })
-export class AppComponent implements OnChanges{
+export class AppComponent {
   title = 'aplicacao-cif-mackenzie';
   public greetings:string;
   private hours: number;
@@ -25,15 +26,11 @@ export class AppComponent implements OnChanges{
         sanitizer.bypassSecurityTrustResourceUrl('../../assets/icons/mack_white.svg')
       );
   }
-  onActivate(componentReference) {
+  onActivate(componentReference:HomeComponent) {
     console.log(componentReference)
-    this.ngOnChanges();
+    this.ngOnInit();
  }
 
-  ngOnChanges() {
-    this.isLogged = this.islogged();
-    this.greetings = this.setGreetigns();
-  }
   ngOnInit(){
     this.isLogged = this.islogged();
     this.greetings = this.setGreetigns();
@@ -71,15 +68,13 @@ export class AppComponent implements OnChanges{
   }
 
   viewProfile(){
-
+    
   }
- 
-  
 
   logout(){
     this.sessionService.logoutUser();
-    this.route.navigateByUrl('');
-    this.ngOnInit();
+    location.reload();
+    this.route.navigate(['']);
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
