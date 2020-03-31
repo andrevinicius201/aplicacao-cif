@@ -36,6 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SessionService } from './service/session.service';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './home/home.component';
+import { PatientRegisterComponent } from './patient-register/patient-register.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
+    PatientRegisterComponent,
   ],
   imports: [
     BrowserModule,

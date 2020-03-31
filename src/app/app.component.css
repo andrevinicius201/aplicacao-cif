@@ -38,6 +38,7 @@
 .menu-greeting {
     position: relative;
     right: 3%;
+    margin-left: 2%;
 }
 
 .list-menu-side {
@@ -46,6 +47,7 @@
 
 mat-button.btn-side-menu {
     height: 60px;
+    font: 500 14px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
 mat-button span {
@@ -69,4 +71,15 @@ mat-icon.icon-side-menu {
 
 .mack-white-icon {
     padding-right: 10px;
+}
+
+.header-toolbar {
+    z-index: 998;
+    position: sticky;
+}
+
+@media(max-width: 768px) {
+    .greeting-span {
+        display: none;
+    }
 }

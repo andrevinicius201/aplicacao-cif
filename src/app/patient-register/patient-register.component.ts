@@ -1,22 +1,20 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CepService } from '../service/cep.service';
+import { Router } from '@angular/router';
+import { SessionService } from '../service/session.service';
+import { AuthService } from '../service/auth.service';
+import { RegisterService } from '../service/register.service';
+import { MatSnackBar, DateAdapter, MatStepper } from '@angular/material';
 import { Person } from '../interfaces/person';
 import { Address } from '../interfaces/address';
-import { CepService } from '../service/cep.service';
-import { MatSnackBar, MatStepper } from '@angular/material';
-import { DateAdapter } from '@angular/material/core';
-import { RegisterService } from '../service/register.service';
-import { AuthService } from '../service/auth.service';
-import { SessionService } from '../service/session.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-patient-register',
+  templateUrl: './patient-register.component.html',
+  styleUrls: ['./patient-register.component.css']
 })
-
-export class RegisterComponent implements OnInit {
+export class PatientRegisterComponent implements OnInit {
 
   cepNotFound = false;
   equalPass = true;
@@ -110,10 +108,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('TO AQUI')
-    if(this.sessionService.getUserLogged() != null){
-      return this.router.navigate(['home']);
-    }
+
   }
 
   goBack2Login(){
@@ -125,56 +120,35 @@ export class RegisterComponent implements OnInit {
     this.address = this.addressForm.value;
     this.person.address = this.address;
     this.person.active = true;
+    this.person.patient.therapistID = this.sessionService.getUserLogged();
     this.person.birthDate = new Date(this.person.birthDate).toISOString();
-    this.registerService.register(this.person)
-      .subscribe(
-        (res: any) => {
-          this.snackbar.open('Cadastro realizado com sucesso!', 'Accept', {
-            duration: 2000,
-            panelClass: ['green-snackbar']
-          });
-          this.login(this.person.cpf, this.person.password);
-        },
-        (erro: any) => {
-          console.log(erro);
-          if(erro.message === "EMAIL_ALREADY_REGISTERED"){
-            this.myStepper.previous();
-            this.snackbar.open('Email já cadastrado!', 'dismiss', {
-              duration: 4000,
-              panelClass: ['red-snackbar']
-            });
-          }
-          if(erro.message === "CPF_ALREADY_REGISTERED"){
-            this.myStepper.previous();
-            this.snackbar.open('Cpf já cadastrado!', 'dismiss', {
-              duration: 4000,
-              panelClass: ['red-snackbar']
-            });
-          }
-        }
-      )
+    // this.registerService.register(this.person)
+    //   .subscribe(
+    //     (res: any) => {
+    //       this.snackbar.open('Paciente Cadastrado \nCom sucesso!', 'Accept', {
+    //         duration: 2000,
+    //         panelClass: ['green-snackbar']
+    //       });
+    //     },
+    //     (erro: any) => {
+    //       console.log(erro);
+    //       if(erro.message === "EMAIL_ALREADY_REGISTERED"){
+    //         this.myStepper.previous();
+    //         this.snackbar.open('Email já cadastrado!', 'dismiss', {
+    //           duration: 4000,
+    //           panelClass: ['red-snackbar']
+    //         });
+    //       }
+    //       if(erro.message === "CPF_ALREADY_REGISTERED"){
+    //         this.myStepper.previous();
+    //         this.snackbar.open('Cpf já cadastrado!', 'dismiss', {
+    //           duration: 4000,
+    //           panelClass: ['red-snackbar']
+    //         });
+    //       }
+    //     }
+    //   )
     }
-    
-  private login(login:string, password:string){
-    console.log('tentando fazer login');
-    this.authService.login(login, password)
-      .subscribe(
-        resp => {
-          this.loading = false;
-          this.sessionService.saveUserLoggedId(resp.id)
-          console.log('successful login!');
-          this.router.navigate(['home']);
-        }, error => {
-          this.loading = false;
-          console.log(error);
-          this.snackbar.open('Não foi possivel realizar o login', 'Dismiss', {
-            duration: 2000,
-            panelClass: ['red-snackbar']
-          });
-          this.router.navigate(['']);
-        }
-      );
-  }
 }
 
 interface Gender {
