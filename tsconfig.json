@@ -1,11 +1,23 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "lib": ["dom", "es2015", "es2016"],
+    "sourceMap": false,
+    "declaration": true,
     "experimentalDecorators": true,
-    "allowJs": true
+    "jsx": "react",
+    "outDir": "lib",
+    "noUnusedLocals": false 
   },
-  "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  }
+  "exclude": [
+    "node_modules",
+    "static",
+    "lib"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }
