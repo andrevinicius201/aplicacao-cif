@@ -1,0 +1,34 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav [ngClass]="{'hidden-sidenav': !isLogged, 'sidenav': islogged}" #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-toolbar color="warn">Menu</mat-toolbar>
+        <mat-nav-list class="list-menu-side">
+            <mat-button class="btn-side-menu" mat-list-item>
+                <mat-icon class="icon-side-menu">add_to_queue</mat-icon><span>Nova Avaliação</span></mat-button>
+            <mat-button class="btn-side-menu" mat-list-item>
+                <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Avaliações Anteriores</span>
+            </mat-button>
+            <mat-button class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
+                <mat-icon class="icon-side-menu">person_add</mat-icon><span>Cadastrar Paciente</span>
+            </mat-button>
+            <mat-button class="btn-side-menu" mat-list-item>
+                <mat-icon class="icon-side-menu">people_alt</mat-icon><span>Pacientes Cadastrados</span></mat-button>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar class="header-toolbar" color="warn">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+            <mat-icon class="mack-white-icon" svgIcon="mack_white"></mat-icon>
+            <span> Aplicação CIF</span>
+            <span class="spacer"></span>
+            <span *ngIf="greetings != null && isLogged" class="greeting-span">{{ greetings }}</span>
+            <button *ngIf="isLogged" mat-button class="menu-greeting" [matMenuTriggerFor]="menu"><mat-icon class="person-icon">person</mat-icon></button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="viewProfile()"><mat-icon>person_outline</mat-icon> Perfil</button>
+                <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
+            </mat-menu>
+        </mat-toolbar>
+        <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
