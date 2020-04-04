@@ -31,7 +31,7 @@
         "hammerjs": "^2.0.8",
         "rxjs": "~6.5.4",
         "tslib": "^1.10.0",
-        "typescript": "~3.5.3",
+        "typescript": "^3.6.4",
         "zone.js": "~0.10.2"
     },
     "devDependencies": {
@@ -51,7 +51,7 @@
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
         "tslint": "~5.15.0",
-        "typescript": "~3.5.3"
+        "typescript": "^3.6.4"
     },
     "engines": {
         "node": "10.16.3",
