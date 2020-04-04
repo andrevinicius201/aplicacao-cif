@@ -7,13 +7,13 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 
 })
+
 export class AppComponent implements OnChanges {
   title = 'aplicacao-cif-mackenzie';
   public greetings: string;
@@ -74,7 +74,6 @@ export class AppComponent implements OnChanges {
   viewProfile() {
 
   }
-
 
   logout() {
     this.sessionService.logoutUser();
