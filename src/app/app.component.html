@@ -5,15 +5,17 @@
             <mat-button class="btn-side-menu" mat-list-item>
                 <mat-icon class="icon-side-menu">add_to_queue</mat-icon><span>Nova Avaliação</span></mat-button>
             <mat-button class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Avaliações Anteriores</span></mat-button>
-            <mat-button class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">person_add</mat-icon><span>Cadastrar Paciente</span></mat-button>
+                <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Avaliações Anteriores</span>
+            </mat-button>
+            <mat-button class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
+                <mat-icon class="icon-side-menu">person_add</mat-icon><span>Cadastrar Paciente</span>
+            </mat-button>
             <mat-button class="btn-side-menu" mat-list-item>
                 <mat-icon class="icon-side-menu">people_alt</mat-icon><span>Pacientes Cadastrados</span></mat-button>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <mat-toolbar color="warn">
+        <mat-toolbar class="header-toolbar" color="warn">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
               <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
