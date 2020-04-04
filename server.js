@@ -5,12 +5,12 @@ var cors = require('cors');
 var app = express();
 
 // Serve only the static files form the dist directory
-app.use(express.static('./dist/aplicacao-cif'));
+app.use(express.static('./dist/aplicacao-cif-mackenzie'));
 app.use(cors());
 
 app.get('/*', function(req, res) {
 
-    res.sendFile(path.join(__dirname, '/dist/aplicacao-cif/index.html'));
+    res.sendFile(path.join(__dirname, '/dist/aplicacao-cif-mackenzie/index.html'));
 });
 
 
