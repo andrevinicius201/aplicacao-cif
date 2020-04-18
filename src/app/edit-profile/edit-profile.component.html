@@ -1,0 +1,126 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title> Meu perfil </mat-card-title>
+        </mat-card-header>
+        <mat-horizontal-stepper linear="true" #stepper>
+            <mat-step [stepControl]="personForm">
+                <form [formGroup]="personForm">
+                    <ng-template matStepLabel>Dados Pessoais</ng-template>
+                    <mat-form-field>
+                        <input matInput placeholder="Nome" [ngModel]="user.firstName"  formControlName="firstName"> 
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Sobrenome</mat-label>
+                        <input matInput placeholder="Sobrenome" [ngModel]="user.lastName" formControlName="lastName" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>CPF</mat-label>
+                        <input matInput placeholder="CPF" #cpf formControlName="cpf" [ngModel]="user.cpf" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" #email type="email" [ngModel]="user.email" formControlName="email" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Senha</mat-label>
+                        <input matInput placeholder="**********" type="password" formControlName="password" required>
+                        <div *ngIf="!equalPass">
+                            <p class="cepNF">Senhas não correspondem!</p>
+                            <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
+                        </div>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Confirmar Senha</mat-label>
+                        <input matInput placeholder="Senha" (change)="validatePass()" placeholder="**********" type="password" formControlName="confirmPass" required>
+                        <div *ngIf="!equalPass">
+                            <p class="cepNF">Senhas não correspondem!</p>
+                            <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
+                        </div>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Celular</mat-label>
+                        <input matInput placeholder="Celular" formControlName="telephoneNumber" [ngModel]="user.telephoneNumber" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Gênero</mat-label>
+                        <mat-select formControlName="sex" [ngModel]="user.sex">
+                            <mat-option *ngFor="let gender of genders" [value]="gender.value">
+                                {{gender.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Data de Nascimento</mat-label>
+                        <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" [ngModel]="user.birthDate"  required formControlName="birthDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="nextStep">
+                        <span class="spacer"></span>
+                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                            <mat-icon>double_arrow</mat-icon>
+                            Próximo
+                            <mat-icon>double_arrow</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="addressForm">
+                <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+                    <ng-template matStepLabel>Dados Residenciais</ng-template>
+                    <mat-form-field>
+                        <mat-label>CEP</mat-label>
+                        <input matInput placeholder="CEP" (change)="searchCEP()" [ngModel]="user.address.postalCode" formControlName="postalCode" required>
+                        <div *ngIf="cepNotFound">
+                            <p class="cepNF">CEP não encontrado!</p>
+                        </div>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Rua</mat-label>
+                        <input matInput placeholder="Rua" formControlName="publicPlace" [ngModel]="user.address.publicPlace" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Número</mat-label>
+                        <input matInput placeholder="Senha" formControlName="houseNumber" [ngModel]="user.address.houseNumber" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Bairro</mat-label>
+                        <input matInput placeholder="Nome" formControlName="neighborhood" [ngModel]="user.address.neighborhood" required>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Cidade</mat-label>
+                        <input matInput placeholder="Cidade" formControlName="city" [ngModel]="user.address.city" required>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="state" [ngModel]="user.address.state">
+                            <mat-option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="nextStep">
+                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
+                            <mat-icon>clear_all</mat-icon>
+                            Limpar
+                            <mat-icon>clear_all</mat-icon>
+                        </button>
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
+                            <mat-icon>done_all</mat-icon>
+                            Concluir
+                            <mat-icon>done_all</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card>
+</div>

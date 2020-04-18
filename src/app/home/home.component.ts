@@ -10,6 +10,7 @@ import { PatientListService } from '../service/patient-list.service';
 import { MatSnackBar, MatStepper } from '@angular/material';
 import { Person } from '../interfaces/person';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
     if(this.session.getUserLogged() == null){
       this.router.navigate(['']);
     }
-
   }
+
 
 }

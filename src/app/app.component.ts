@@ -68,7 +68,7 @@ export class AppComponent implements OnChanges {
   }
 
   viewProfile() {
-
+    this.route.navigate(['editProfile']);
   }
 
   logout() {
