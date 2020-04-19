@@ -40,11 +40,10 @@ import { SessionService } from './service/session.service';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './home/home.component';
 import { PatientRegisterComponent } from './patient-register/patient-register.component';
+import { PatientCenterComponent } from './patient-center/patient-center.component';
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-
-
 
 @NgModule({
   declarations: [
@@ -53,6 +52,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     RegisterComponent,
     HomeComponent,
     PatientRegisterComponent,
+    PatientCenterComponent,
     PatientListComponent,
     PatientFilterPipe,
     EditProfileComponent

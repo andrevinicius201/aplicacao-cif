@@ -156,6 +156,9 @@ mat-form-field {
      ::ng-deep .mat-step-label {
         display: none !important;
     }
+    .login-wrapper .mat-card {
+        padding: 40px 0px 50px;
+    }
 }
 
 @media(max-width: 645px) {

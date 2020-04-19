@@ -1,18 +1,23 @@
-*{
+* {
     margin: 0.2em;
     padding: 0.2em;
 }
 
 .user-card {
-    max-width: 600px;
-  }
-  
-  .header-image {
+    max-width: 900px;
+    width: 100%;
+}
+
+.header-image {
     background-image: url('https://img.icons8.com/pastel-glyph/2x/person-male.png');
     background-size: cover;
-  }
+}
 
-mat-form-field{
+mat-form-field {
     min-width: 150px;
-    max-width: 300px;
+    max-width: 500px;
+}
+
+.search-field {
+    width: 100%;
 }

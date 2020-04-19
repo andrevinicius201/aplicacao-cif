@@ -1,4 +1,4 @@
-import { Component, OnChanges, Injectable } from '@angular/core';
+import { Component, OnChanges, Injectable, ɵConsole } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ export class AppComponent implements OnChanges {
   title = 'aplicacao-cif-mackenzie';
   public greetings: string;
   private hours: number;
+  public role: string;
   public isLogged: boolean;
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private route: Router, private sessionService: SessionService, private breakpointObserver: BreakpointObserver) {
     iconRegistry.addSvgIcon(
@@ -32,11 +33,13 @@ export class AppComponent implements OnChanges {
   ngOnChanges() {
     this.isLogged = this.islogged();
     this.greetings = this.setGreetigns();
+    this.role = localStorage.getItem('role');
   }
 
   ngOnInit() {
     this.isLogged = this.islogged();
     this.greetings = this.setGreetigns();
+    this.role = localStorage.getItem('role');
     if (this.sessionService.getUserLogged() == null) {
       return this.route.navigate(['']);
     }
@@ -50,7 +53,11 @@ export class AppComponent implements OnChanges {
   }
 
   goHome(){
-    this.route.navigate(['home']);
+    if(localStorage.getItem('role') == 'PATIENT'){
+      this.route.navigate(['evaluations']);
+    }else{
+      this.route.navigate(['home']);
+    }
   }
 
   setGreetigns() {
@@ -62,7 +69,7 @@ export class AppComponent implements OnChanges {
       return "Boa Tarde, " + localStorage.name + "!";
     }
     if (this.hours >= 18 || this.hours < 3) {
-      return "Boa Notie, " + localStorage.name + "!";
+      return "Boa Noite, " + localStorage.name + "!";
     }
 
   }
