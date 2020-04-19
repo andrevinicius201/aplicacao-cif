@@ -20,6 +20,10 @@ export class PatientListComponent implements OnInit {
     if(this.session.getUserLogged() == null){
       this.router.navigate(['']);
     }
+    
+    if(localStorage.getItem('role') == 'PATIENT'){
+      this.router.navigate(['evaluations']);
+    }
 
     this._patientlist.getPatientList()
         .subscribe(data => this.patients = data);
