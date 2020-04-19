@@ -65,15 +65,11 @@
                     </mat-form-field>
                     <div class="nextStep">
                         <button mat-button mat-button (click)="goBack2Login()" mat-stroked-button type="submit" color="warn" class="btn-block btn-cancel">
-                            <mat-icon>remove_circle_outline</mat-icon>
                             Cancelar
-                            <mat-icon>remove_circle_outline</mat-icon>
                         </button>
                         <span class="spacer"></span>
                         <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
-                            <mat-icon>double_arrow</mat-icon>
                             Próximo
-                            <mat-icon>double_arrow</mat-icon>
                         </button>
                     </div>
                 </form>
@@ -117,14 +113,10 @@
                     </mat-form-field>
                     <div class="nextStep">
                         <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
-                            <mat-icon>clear_all</mat-icon>
                             Limpar
-                            <mat-icon>clear_all</mat-icon>
                         </button>
                         <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
-                            <mat-icon>done_all</mat-icon>
                             Concluir
-                            <mat-icon>done_all</mat-icon>
                         </button>
                         <section *ngIf="loading" class="example-section">
                             <mat-progress-bar class="example-margin" mode="indeterminate">
