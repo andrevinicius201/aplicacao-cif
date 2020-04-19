@@ -36,7 +36,13 @@ export class LoginComponent implements OnInit {
           this.sessionService.saveUserLoggedId(res.id, res.firstName);
           console.log('successful login!');
           this.personOut.emit(this.person);
-          this.router.navigate(['home']);
+          if(res.patient != null){
+            localStorage.setItem('role','PATIENT')
+            this.router.navigate(['evaluations']);
+          }else{
+            localStorage.setItem('role','THERAPIST')
+            this.router.navigate(['home']);
+          }
         }, error => {
           this.loading = false;
           console.log(error);

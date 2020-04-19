@@ -117,7 +117,9 @@ export class PatientRegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    if(localStorage.getItem('role') == 'PATIENT'){
+      this.router.navigate(['evaluations']);
+    }
   }
 
   goBack2Login(){

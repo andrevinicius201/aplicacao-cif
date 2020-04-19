@@ -38,6 +38,7 @@ import { SessionService } from './service/session.service';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './home/home.component';
 import { PatientRegisterComponent } from './patient-register/patient-register.component';
+import { PatientCenterComponent } from './patient-center/patient-center.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { PatientRegisterComponent } from './patient-register/patient-register.co
     RegisterComponent,
     HomeComponent,
     PatientRegisterComponent,
+    PatientCenterComponent,
   ],
   imports: [
     BrowserModule,
