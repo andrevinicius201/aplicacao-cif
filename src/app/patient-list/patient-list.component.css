@@ -5,7 +5,7 @@
 
 .user-card {
     max-width: 900px;
-    width: 100%;
+    width: 90%;
 }
 
 .header-image {
@@ -20,4 +20,8 @@ mat-form-field {
 
 .search-field {
     width: 100%;
+}
+
+.patients-list {
+    flex-direction: column !important;
 }
