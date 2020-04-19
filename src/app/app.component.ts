@@ -75,7 +75,7 @@ export class AppComponent implements OnChanges {
   }
 
   viewProfile() {
-    //TODO VIEW PROFILE
+    this.route.navigate(['editProfile']);
   }
 
   logout() {
@@ -86,6 +86,10 @@ export class AppComponent implements OnChanges {
 
   redirectToPatientRegister() {
     this.route.navigate(['patientRegister']);
+  }
+
+  redirectToPatientList(){
+    this.route.navigate(['patientList']);
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

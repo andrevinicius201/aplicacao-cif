@@ -27,7 +27,9 @@ import {
   MatProgressSpinnerModule,
   MatStepperModule,
   MatMenuModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatCard,
+  MatCardModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -39,6 +41,9 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './home/home.component';
 import { PatientRegisterComponent } from './patient-register/patient-register.component';
 import { PatientCenterComponent } from './patient-center/patient-center.component';
+import { PatientListComponent } from './patient-list/patient-list.component';
+import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +53,9 @@ import { PatientCenterComponent } from './patient-center/patient-center.componen
     HomeComponent,
     PatientRegisterComponent,
     PatientCenterComponent,
+    PatientListComponent,
+    PatientFilterPipe,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -81,11 +89,12 @@ import { PatientCenterComponent } from './patient-center/patient-center.componen
     MatStepperModule,
     MatMenuModule,
     LayoutModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCardModule
   ],
   providers: [
     SessionService,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

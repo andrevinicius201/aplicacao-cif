@@ -10,8 +10,9 @@
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
                 <mat-icon class="icon-side-menu">person_add</mat-icon><span>Cadastrar Paciente</span>
             </mat-button>
-            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
+            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientList()">
                 <mat-icon class="icon-side-menu">people_alt</mat-icon><span>Pacientes Cadastrados</span></mat-button>
+
             <mat-button *ngIf="role == 'PATIENT'" class="btn-side-menu" mat-list-item>
                 <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Minhas Avaliações</span></mat-button>
         </mat-nav-list>
