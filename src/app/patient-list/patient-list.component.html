@@ -1,12 +1,13 @@
-<div class="form-group" fxLayout="row" fxLayoutAlign="end center">
-    <mat-form-field class="search-field" appearance="fill">
-        <mat-label>Buscar por nome do paciente</mat-label>
-        <mat-icon matSuffix>search</mat-icon>
-        <input matInput type="text" class="searchInput" [(ngModel)]="searchTerm" />
-    </mat-form-field>
-</div>
-
 <div class="patients-list" fxLayoutAlign="center center">
+
+    <div class="form-group" fxLayoutAlign="end stretch">
+        <mat-form-field class="search-field" appearance="fill">
+            <mat-label>Buscar por nome do paciente</mat-label>
+            <mat-icon matSuffix>search</mat-icon>
+            <input matInput type="text" autocomplete="off" class="searchInput" [(ngModel)]="searchTerm" />
+        </mat-form-field>
+    </div>
+
     <mat-card class="user-card" *ngFor="let patient of patients | patientFilter:searchTerm">
         <mat-card-header>
             <div mat-card-avatar class="header-image"></div>
