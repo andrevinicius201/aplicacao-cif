@@ -26,10 +26,7 @@ export class SessionService {
   }
 
   logoutUser() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('name');
-    this.userId = '';
-    this.name = '';
+    localStorage.clear();
     this.route.navigate(['']);
   }
 }

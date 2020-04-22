@@ -1,32 +1,28 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Person } from '../interfaces/person';
+import { Address} from '../interfaces/address';
 import { CepService } from '../service/cep.service';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
-import { RegisterService } from '../service/register.service';
-import { MatSnackBar, DateAdapter, MatStepper, MAT_DATE_FORMATS } from '@angular/material';
-import { Person } from '../interfaces/person';
-import { Address } from '../interfaces/address';
-import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
+import { EditProfileService } from '../service/edit-profile.service';
+
 
 @Component({
-  selector: 'app-patient-register',
-  templateUrl: './patient-register.component.html',
-  styleUrls: ['./patient-register.component.css'],
-  providers: [
-    { provide: DateAdapter, useClass: AppDateAdapter },
-    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
-  ]
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.css']
 })
-export class PatientRegisterComponent implements OnInit {
-
+export class EditProfileComponent implements OnInit {
+  user:Person;
+  personForm: FormGroup;
+  addressForm: FormGroup;
   cepNotFound = false;
   equalPass = true;
   loading = false;
-  registered = false;
-  personForm: FormGroup;
-  addressForm: FormGroup;
+  patient = null;
   states: any = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SE', 'SP', 'TO'];
   Roles: any = ['Admin', 'Paciente', 'Terapeuta'];
 
@@ -35,22 +31,22 @@ export class PatientRegisterComponent implements OnInit {
     { value: 'M', viewValue: 'Masculino' },
     { value: 'O', viewValue: 'Não informar' }
   ];
-
-  constructor(private cepService: CepService, private router: Router, 
-    private sessionService: SessionService, private authService: AuthService, 
-    private registerService: RegisterService, private snackbar: MatSnackBar, 
-    private _adapter: DateAdapter<any>) {
+ 
+  
+  constructor(
+    private cepService:CepService, 
+    private snackbar:MatSnackBar, 
+    private _authservice:AuthService, 
+    private session:SessionService,
+    private editProfileService: EditProfileService
+    ) { 
     this.personForm = this.createPersonForm();
     this.addressForm = this.createAddressForm();
-    this._adapter.setLocale('br');
+
   }
 
-
-  @Input() person: Person = <Person>{};
-  @Input() address: Address = <Address>{};
-  @ViewChild('cpf') cpfElement: ElementRef;
-  @ViewChild('email') emailElement: ElementRef;
-  @ViewChild('stepper') private myStepper: MatStepper;
+  @Input() person:Person = <Person>{};
+  @Input() address:Address = <Address>{};
 
   searchCEP() {
     this.cepService.searchCEP(this.addressForm.controls.postalCode.value)
@@ -87,6 +83,14 @@ export class PatientRegisterComponent implements OnInit {
     this.addressForm.controls['state'].setValue(cep.uf);
   }
 
+  ngOnInit(){
+    console.log("rota direcionada");
+    this._authservice.getUserData(this.session.userId)
+          .subscribe(data => this.user = data);
+    
+
+  }
+
   createPersonForm() {
     return new FormGroup({
       'email': new FormControl(this.person.email, [Validators.required, Validators.email]),
@@ -116,54 +120,29 @@ export class PatientRegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    if(localStorage.getItem('role') == 'PATIENT'){
-      this.router.navigate(['evaluations']);
-    }
-  }
-
-  goBack2Login(){
-    this.router.navigate(['']);
-  }
-
   onSubmit() {
     this.loading = true;
     this.person = this.personForm.value;
     this.address = this.addressForm.value;
     this.person.address = this.address;
-    this.person.active = true;
-    this.person.patient.therapistID = this.sessionService.getUserLogged();
+    this.person.patient = this.patient;
     this.person.birthDate = new Date(this.person.birthDate).toISOString();
-     this.registerService.register(this.person)
-       .subscribe(
-         (res: any) => {
+    console.log(this.person);
+    this.editProfileService.updateProfile(this.person)
+      .subscribe(
+        (res: any) => {
+          this.snackbar.open('Dados atualizados!', 'OK', {
+            duration: 2000,
+            panelClass: ['green-snackbar']
+          });
+        },
+        (erro: any) => {
           this.loading = false;
-           this.snackbar.open('Paciente Cadastrado \nCom sucesso!', 'Accept', {
-             duration: 2000,
-             panelClass: ['green-snackbar']
-           });
-           this.router.navigate(['home']);
-         },
-         (erro: any) => {
-          this.loading = false;
-           console.log(erro);
-           if(erro.message === "EMAIL_ALREADY_REGISTERED"){
-             this.myStepper.previous();
-             this.snackbar.open('Email já cadastrado!', 'dismiss', {
-               duration: 4000,
-               panelClass: ['red-snackbar']
-             });
-           }
-           if(erro.message === "CPF_ALREADY_REGISTERED"){
-             this.myStepper.previous();
-             this.snackbar.open('Cpf já cadastrado!', 'dismiss', {
-               duration: 4000,
-               panelClass: ['red-snackbar']
-             });
-           }
-         }
-       )
-    }
+          console.log(erro);
+        }
+      )
+  }
+
 }
 
 interface Gender {
