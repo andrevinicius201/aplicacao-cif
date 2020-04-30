@@ -29,7 +29,8 @@ import {
   MatMenuModule,
   MatProgressBarModule,
   MatCard,
-  MatCardModule
+  MatCardModule,
+  MatDialogModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -44,6 +45,8 @@ import { PatientCenterComponent } from './patient-center/patient-center.componen
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
+import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
@@ -95,8 +99,10 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
   providers: [
     SessionService,
     MatDatepickerModule,
+    OpenModalService
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents:[ModalDialogComponent]
 })
 export class AppModule { }

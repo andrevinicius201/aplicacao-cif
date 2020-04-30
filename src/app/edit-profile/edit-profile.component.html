@@ -8,7 +8,7 @@
                 <form [formGroup]="personForm">
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
-                        <input matInput placeholder="Nome" [ngModel]="user.firstName"  formControlName="firstName"> 
+                        <input matInput placeholder="Nome" [ngModel]="user.firstName" formControlName="firstName">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Sobrenome</mat-label>
@@ -56,16 +56,14 @@
 
                     <mat-form-field>
                         <mat-label>Data de Nascimento</mat-label>
-                        <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" [ngModel]="user.birthDate"  required formControlName="birthDate">
+                        <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" [ngModel]="user.birthDate" required formControlName="birthDate">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="nextStep">
                         <span class="spacer"></span>
                         <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
-                            <mat-icon>double_arrow</mat-icon>
                             Próximo
-                            <mat-icon>double_arrow</mat-icon>
                         </button>
                     </div>
                 </form>
@@ -108,15 +106,11 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
-                            <mat-icon>clear_all</mat-icon>
+                        <button *ngIf="!loading" mat-button (click)="stepper.previous()" mat-stroked-button color="warn" class="btn-block">
                             Limpar
-                            <mat-icon>clear_all</mat-icon>
                         </button>
                         <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
-                            <mat-icon>done_all</mat-icon>
                             Concluir
-                            <mat-icon>done_all</mat-icon>
                         </button>
                     </div>
                 </form>
