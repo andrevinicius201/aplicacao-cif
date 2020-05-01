@@ -6,6 +6,7 @@
         <mat-horizontal-stepper linear="true" #stepper>
             <mat-step [stepControl]="personForm">
                 <form [formGroup]="personForm">
+                    <button mat-button color="primary" (click)="deleteTherapist(user.id)">Excluir cadastro</button>
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
                         <input matInput placeholder="Nome" [ngModel]="user.firstName" formControlName="firstName">

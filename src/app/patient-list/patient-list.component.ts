@@ -3,8 +3,9 @@ import { SessionService } from '../service/session.service';
 import { Router } from '@angular/router';
 import { PatientListService } from '../service/patient-list.service';
 import {MatCardModule} from '@angular/material/card';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
 import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
+import { RemoveAccountService } from '../service/remove-account.service';
 
 @Component({
   selector: 'app-patient-list',
@@ -19,7 +20,9 @@ export class PatientListComponent implements OnInit {
     private openModalService: OpenModalService,
     private session:SessionService,
     private router:Router,
-    private _patientlist:PatientListService
+    private _patientlist:PatientListService,
+    private removeAccount: RemoveAccountService,
+    private snackbar: MatSnackBar
     ){}
 
   ngOnInit(){
@@ -36,7 +39,7 @@ export class PatientListComponent implements OnInit {
         .subscribe(data => this.patients = data);
   }
 
-  deletePatient(){
+  deletePatient(id:String){
     const data = {
       text: 'Tem certeza que deseja excluir o paciente?',
       title: 'Excluir paciente',
@@ -45,8 +48,16 @@ export class PatientListComponent implements OnInit {
     }
     this.openModalService.openDialog(data).subscribe(res=>{
       if(res){
-        console.log('RES');
-        console.log(res);
+        console.log("exclusao solicitada")
+        this.removeAccount.removeAccount(id)
+          .subscribe(
+            (res: any) => {
+              location.reload();
+              this.snackbar.open('Cadastro removido', 'OK ', {
+                duration: 2000,
+              });
+            }
+          );
       }else{
         console.log('Paciente não excluido');
       }

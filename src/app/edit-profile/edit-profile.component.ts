@@ -8,6 +8,9 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
 import { EditProfileService } from '../service/edit-profile.service';
+import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
+import { RemoveAccountService } from '../service/remove-account.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,10 +37,13 @@ export class EditProfileComponent implements OnInit {
  
   
   constructor(
+    private openModalService: OpenModalService,
+    private removeAccount: RemoveAccountService,
     private cepService:CepService, 
     private snackbar:MatSnackBar, 
     private _authservice:AuthService, 
     private session:SessionService,
+    private router: Router,
     private editProfileService: EditProfileService
     ) { 
     this.personForm = this.createPersonForm();
@@ -107,6 +113,32 @@ export class EditProfileComponent implements OnInit {
         'note': new FormControl('')
       })
     });
+  }
+
+  deleteTherapist(id:String){
+    const data = {
+      text: 'Tem certeza que deseja excluir seu cadastro?',
+      title: 'Excluir cadastro',
+      buttonYes: 'Sim',
+      buttonNo: 'Não'
+    }
+    this.openModalService.openDialog(data).subscribe(res=>{
+      if(res){
+        console.log("exclusao solicitada")
+        this.removeAccount.removeAccount(id)
+          .subscribe(
+            (res: any) => {
+              location.reload();
+              this.snackbar.open('Cadastro removido', 'OK ', {
+                duration: 2000,
+              });
+              this.session.logoutUser();
+            }
+          );
+      }else{
+        console.log('Cadastro não excluído');
+      }
+    })
   }
 
   createAddressForm() {
