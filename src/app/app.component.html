@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav [ngClass]="{'hidden-sidenav': !isLogged, 'sidenav': islogged}" #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-sidenav *ngIf="isLogged" #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false || openMenu">
         <mat-toolbar color="warn">Menu</mat-toolbar>
         <mat-nav-list class="list-menu-side">
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
@@ -19,8 +19,8 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar class="header-toolbar" color="warn">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            <button type="button" aria-label="Toggle sidenav" (click)="openSideMenu()" mat-icon-button *ngIf="(isHandset$ | async) && isLogged">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
             <span class="app-name-header" (click)="goHome()"> Aplicação CIF</span>
             <mat-icon (click)="goHome()" class="mack-white-icon" svgIcon="mack_white"></mat-icon>
