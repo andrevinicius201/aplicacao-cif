@@ -1,11 +1,12 @@
-import { Component, OnChanges, Injectable, ɵConsole } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
+import { Component, OnChanges, Injectable, ɵConsole, ViewChild, ElementRef } from '@angular/core';
+import { MatIconRegistry, MatSidenav } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { SessionService } from './service/session.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnChanges {
   private hours: number;
   public role: string;
   public isLogged: boolean;
+  public openMenu: boolean;
   
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private route: Router, private sessionService: SessionService, private breakpointObserver: BreakpointObserver) {
     iconRegistry.addSvgIcon(
@@ -28,6 +30,8 @@ export class AppComponent implements OnChanges {
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/icons/mack_white.svg')
     );
   }
+
+  @ViewChild('drawer') drawerElement: MatSidenav;
 
   onActivate(componentReference) {
     this.ngOnChanges();
@@ -45,6 +49,12 @@ export class AppComponent implements OnChanges {
     this.role = localStorage.getItem('role');
     if (this.sessionService.getUserLogged() == null) {
       return this.route.navigate(['']);
+    }
+  }
+
+  openSideMenu(){
+    if(this.drawerElement != undefined){
+      this.drawerElement.open();
     }
   }
 

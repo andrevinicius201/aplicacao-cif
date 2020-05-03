@@ -2,7 +2,7 @@
 
     <div class="form-group" fxLayoutAlign="end stretch">
         <mat-form-field class="search-field" appearance="fill">
-            <mat-label>Buscar por nome do paciente</mat-label>
+            <mat-label>Buscar Paciente</mat-label>
             <mat-icon matSuffix>search</mat-icon>
             <input matInput type="text" autocomplete="off" class="searchInput" [(ngModel)]="searchTerm" />
         </mat-form-field>
@@ -12,8 +12,7 @@
         <mat-card-header>
             <div mat-card-avatar class="header-image"></div>
             <mat-card-title>{{ patient.firstName }}</mat-card-title>
-            <mat-card-subtitle>{{ patient.email }} | {{ patient.telephoneNumber }}</mat-card-subtitle>
-            <mat-card-subtitle>{{ patient.active}} | {{ patient.telephoneNumber }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ patient.email }} | {{ patient.cpf | mask: '000.000.000-00' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <p>
