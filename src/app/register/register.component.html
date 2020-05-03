@@ -19,7 +19,7 @@
 
                     <mat-form-field>
                         <mat-label>CPF</mat-label>
-                        <input matInput placeholder="CPF" #cpf formControlName="cpf" required>
+                        <input mask="000.000.000-00" maxlength="14" matTooltip="CPF sem pontuação" matTooltipPosition="after" matInput placeholder="CPF" #cpf formControlName="cpf" required>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Email</mat-label>
@@ -28,7 +28,7 @@
 
                     <mat-form-field>
                         <mat-label>Senha</mat-label>
-                        <input matInput placeholder="Senha" type="password" formControlName="password" required>
+                        <input maxlength="8" matTooltip="Entre 6 e 8 caracteres" matTooltipPosition="after" matInput placeholder="Senha" type="password" formControlName="password" required>
                         <div *ngIf="!equalPass">
                             <p class="cepNF">Senhas não correspondem!</p>
                             <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
@@ -37,7 +37,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Confirmar Senha</mat-label>
-                        <input matInput placeholder="Senha" (change)="validatePass()" type="password" formControlName="confirmPass" required>
+                        <input maxlength="8" matTooltip="Entre 6 e 8 caracteres" matTooltipPosition="after" matInput placeholder="Senha" (change)="validatePass()" type="password" formControlName="confirmPass" required>
                         <div *ngIf="!equalPass">
                             <p class="cepNF">Senhas não correspondem!</p>
                             <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
@@ -46,8 +46,7 @@
 
                     <mat-form-field>
                         <mat-label>Celular</mat-label>
-                        <input matInput placeholder="Celular" formControlName="telephoneNumber" required>
-                    </mat-form-field>
+                        <input mask="(00)00000-0000" maxlength="14" matTooltip="Com DDD" matTooltipPosition="after" matInput placeholder="Celular" formControlName="telephoneNumber" required> </mat-form-field>
                     <mat-form-field>
                         <mat-label>Gênero</mat-label>
                         <mat-select formControlName="sex">
@@ -68,7 +67,7 @@
                             Cancelar
                         </button>
                         <span class="spacer"></span>
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block btn-next">
                             Próximo
                         </button>
                     </div>
@@ -79,7 +78,7 @@
                     <ng-template matStepLabel>Dados Residênciais</ng-template>
                     <mat-form-field>
                         <mat-label>CEP</mat-label>
-                        <input matInput placeholder="CEP" (change)="searchCEP()" formControlName="postalCode" required>
+                        <input mask="00000-000" matInput placeholder="CEP" (change)="searchCEP()" formControlName="postalCode" required>
                         <div *ngIf="cepNotFound">
                             <p class="cepNF">CEP não encontrado!</p>
                         </div>
@@ -115,7 +114,7 @@
                         <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
                             Limpar
                         </button>
-                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block btn-next">
                             Concluir
                         </button>
                         <section *ngIf="loading" class="example-section">
