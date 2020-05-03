@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Person } from '../interfaces/person';
 import { Address} from '../interfaces/address';
 import { CepService } from '../service/cep.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
@@ -16,7 +16,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
 export class EditProfileComponent implements OnInit {
   user:Person;
@@ -106,7 +110,7 @@ export class EditProfileComponent implements OnInit {
       'lastName': new FormControl(this.person.lastName, [Validators.required]),
       'cpf': new FormControl(this.person.lastName, [Validators.required, Validators.pattern('[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}')]),
       'sex': new FormControl(this.person.sex, [Validators.required]),
-      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.maxLength(14)]),
       'birthDate': new FormControl(this.person.birthDate, [Validators.required]),
       'patient': new FormGroup({
         'therapistID': new FormControl(''),

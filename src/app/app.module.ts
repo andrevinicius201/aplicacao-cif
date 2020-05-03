@@ -47,6 +47,7 @@ import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
 import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.compone
     EditProfileComponent
   ],
   imports: [
+    NgxMaskModule.forRoot(),
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -94,7 +96,7 @@ import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.compone
     MatMenuModule,
     LayoutModule,
     MatProgressBarModule,
-    MatCardModule
+    MatCardModule,
   ],
   providers: [
     SessionService,

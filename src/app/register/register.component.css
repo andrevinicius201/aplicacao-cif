@@ -143,8 +143,8 @@ mat-form-field {
     float: left !important;
 }
 
-.btn-cancel {
-    margin-right: 49%;
+.btn-next {
+    float: right !important;
 }
 
 .cepNF {
@@ -159,6 +159,9 @@ mat-form-field {
     .login-wrapper .mat-card {
         padding: 40px 0px 50px;
     }
+    .btn-block {
+        width: 100%;
+    }
 }
 
 @media(max-width: 645px) {
@@ -166,7 +169,7 @@ mat-form-field {
         margin-right: 0;
     }
     .login-wrapper .mat-stroked-button {
-        width: 225px;
+        width: 100%;
         margin-bottom: 5%;
     }
     .btn-clean {
