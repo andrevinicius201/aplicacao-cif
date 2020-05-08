@@ -30,7 +30,8 @@ import {
   MatProgressBarModule,
   MatCard,
   MatCardModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTreeModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -47,7 +48,7 @@ import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
 import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     LayoutModule,
     MatProgressBarModule,
     MatCardModule,
+    MatTreeModule
   ],
   providers: [
     SessionService,

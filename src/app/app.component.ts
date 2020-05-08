@@ -1,5 +1,5 @@
 import { Component, OnChanges, Injectable, ɵConsole, ViewChild, ElementRef } from '@angular/core';
-import { MatIconRegistry, MatSidenav } from '@angular/material';
+import { MatIconRegistry, MatSidenav, MatSnackBar } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { SessionService } from './service/session.service';
@@ -7,6 +7,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
+import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
+import { RemoveAccountService } from './service/remove-account.service';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
@@ -17,6 +21,7 @@ import { ThrowStmt } from '@angular/compiler';
 
 export class AppComponent implements OnChanges {
   title = 'aplicacao-cif-mackenzie';
+  pageTitle: String;
 
   public greetings: string;
   private hours: number;
@@ -24,11 +29,25 @@ export class AppComponent implements OnChanges {
   public isLogged: boolean;
   public openMenu: boolean;
   
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private route: Router, private sessionService: SessionService, private breakpointObserver: BreakpointObserver) {
+  constructor(
+    iconRegistry: MatIconRegistry, 
+    sanitizer: DomSanitizer, 
+    private route: Router, 
+    private sessionService: SessionService, 
+    private breakpointObserver: BreakpointObserver,
+    private openModalService:OpenModalService,
+    private removeAccount: RemoveAccountService,
+    private snackbar:MatSnackBar,
+    private session:SessionService,
+    private location:Location
+    ) {
     iconRegistry.addSvgIcon(
       'mack_white',
       sanitizer.bypassSecurityTrustResourceUrl('../../assets/icons/mack_white.svg')
     );
+    route.events.subscribe(val => {
+      this.pageTitle = window.location.pathname.replace("/","");
+    });
   }
 
   @ViewChild('drawer') drawerElement: MatSidenav;
@@ -50,7 +69,9 @@ export class AppComponent implements OnChanges {
     if (this.sessionService.getUserLogged() == null) {
       return this.route.navigate(['']);
     }
+    this.pageTitle = window.location.pathname.replace("/","");
   }
+
 
   openSideMenu(){
     if(this.drawerElement != undefined){
@@ -110,4 +131,30 @@ export class AppComponent implements OnChanges {
       map(result => result.matches),
       shareReplay()
     );
+
+    deleteTherapist(){
+      const data = {
+        text: 'Tem certeza que deseja excluir seu cadastro?',
+        title: 'Excluir cadastro',
+        buttonYes: 'Sim',
+        buttonNo: 'Não'
+      }
+      this.openModalService.openDialog(data).subscribe(res=>{
+        if(res){
+          console.log("exclusao solicitada")
+          this.removeAccount.removeAccount(this.session.userId)
+            .subscribe(
+              (res: any) => {
+                location.reload();
+                this.snackbar.open('Cadastro removido', 'OK ', {
+                  duration: 2000,
+                });
+                this.session.logoutUser();
+              }
+            );
+        }else{
+          console.log('Cadastro não excluído');
+        }
+      })
+    }
 }

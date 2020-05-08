@@ -15,6 +15,7 @@ import { RemoveAccountService } from '../service/remove-account.service';
 export class PatientListComponent implements OnInit {
   searchTerm: string;
   public patients = [];
+  title:String = "Listagem de paciente";
 
   constructor(
     private openModalService: OpenModalService,

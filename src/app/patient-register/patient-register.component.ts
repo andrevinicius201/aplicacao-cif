@@ -120,6 +120,8 @@ export class PatientRegisterComponent implements OnInit {
     if(localStorage.getItem('role') == 'PATIENT'){
       this.router.navigate(['evaluations']);
     }
+
+  
   }
 
   goBack2Login(){
