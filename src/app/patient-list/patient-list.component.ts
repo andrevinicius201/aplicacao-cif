@@ -1,9 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../service/session.service';
 import { Router } from '@angular/router';
 import { PatientListService } from '../service/patient-list.service';
-import {MatCardModule} from '@angular/material/card';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
 
@@ -51,7 +50,7 @@ export class PatientListComponent implements OnInit {
         console.log("exclusao solicitada")
         this.removeAccount.removeAccount(id)
           .subscribe(
-            (res: any) => {
+            () => {
               location.reload();
               this.snackbar.open('Cadastro removido', 'OK ', {
                 duration: 2000,
@@ -62,6 +61,10 @@ export class PatientListComponent implements OnInit {
         console.log('Paciente não excluido');
       }
     })
+  }
+
+  newEvaluation(patientCPF: String){
+    this.router.navigate(['evaluation'], {state: {patientCpf: patientCPF}})
   }
 
 }

@@ -1,0 +1,22 @@
+.expansion-panel {
+    margin-bottom: 10px;
+}
+
+::ng-deep .mat-accordion {
+    flex-direction: column !important;
+}
+
+.scrollable-content {
+    max-height: 300px;
+    overflow: auto;
+    margin-top: 5px;
+}
+
+@media(max-width: 768px) {
+    .panel-description {
+        display: none;
+    }
+    .expansion-panel {
+        margin-bottom: 0;
+    }
+}
