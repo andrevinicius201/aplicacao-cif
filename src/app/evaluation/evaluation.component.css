@@ -6,6 +6,10 @@
     flex-direction: column !important;
 }
 
+::ng-deep .mat-step-header .mat-step-icon {
+    background-color: #E4022D;
+}
+
 .scrollable-content {
     max-height: 300px;
     overflow: auto;
