@@ -16,6 +16,12 @@
     margin-top: 5px;
 }
 
+.main-stepper {}
+
+.mat-card {
+    display: grid;
+}
+
 @media(max-width: 768px) {
     .panel-description {
         display: none;

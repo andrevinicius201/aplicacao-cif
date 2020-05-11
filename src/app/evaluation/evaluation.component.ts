@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -11,11 +9,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class EvaluationComponent implements OnInit {
 
+  public stepOne = "Informações da Avaliação";
+  public stepTwo = "Fatores Ambientais";
+  public stepThree = "Atividade E Participação";
+  public stepFour = "Estruturas Do Corpo";
+  public stepFive = "Funções do Corpo";
+  
   panelOpenState = false;
   patientCPF: String; 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
-  
+
   constructor(private route:Router,private _formBuilder: FormBuilder) {
     if(this.route.getCurrentNavigation().extras != "undefined"){
       this.patientCPF = this.route.getCurrentNavigation().extras.state.patientCpf;

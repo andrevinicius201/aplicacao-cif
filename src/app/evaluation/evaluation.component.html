@@ -1,25 +1,18 @@
-<mat-horizontal-stepper linear="false" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
+<mat-horizontal-stepper class="main-stepper" linear="false" #stepper>
+    <mat-step fxLayoutAlign="center" [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Informações da Avaliação</ng-template>
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepOne}}">{{stepOne}}</span>
+            </ng-template>
             <mat-card>
                 <mat-form-field>
-                    <mat-label>Name</mat-label>
+                    <mat-label>CPF do Paciente</mat-label>
                     <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
                 </mat-form-field>
                 <mat-form-field>
-                    <mat-label>Name</mat-label>
+                    <mat-label>Local da Avaliação</mat-label>
                     <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
                 </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-                </mat-form-field>
-
                 <div>
                     <button mat-button matStepperNext>Next</button>
                 </div>
@@ -28,7 +21,9 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Fatores Ambientais</ng-template>
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepTwo}}">{{stepTwo}}</span>
+            </ng-template>
             <mat-form-field>
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
@@ -41,7 +36,9 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Atividade E Participação</ng-template>
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepThree}}">{{stepThree}}</span>
+            </ng-template>
             <mat-form-field>
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
@@ -54,7 +51,9 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Estruturas Do Corpo</ng-template>
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepFour}}">{{stepFour}}</span>
+            </ng-template>
             <mat-form-field>
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
@@ -67,7 +66,9 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Funções Do Corpo</ng-template>
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepFive}}">{{stepFive}}</span>
+            </ng-template>
             <mat-form-field>
                 <mat-label>Address</mat-label>
                 <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
