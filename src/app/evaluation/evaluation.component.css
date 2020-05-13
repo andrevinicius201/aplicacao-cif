@@ -2,6 +2,10 @@
     margin-bottom: 10px;
 }
 
+h3 {
+    display: none;
+}
+
 ::ng-deep .mat-accordion {
     flex-direction: column !important;
 }
@@ -16,7 +20,27 @@
     margin-top: 5px;
 }
 
-.main-stepper {}
+.mat-expansion-panel {
+    margin-bottom: 3%;
+}
+
+.mat-expansion-panel-header-title {
+    max-width: 40px;
+    width: -webkit-fill-available;
+}
+
+.mat-expansion-panel-header-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.inner-title {
+    color: #707070;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
 
 .mat-card {
     display: grid;
@@ -28,5 +52,13 @@
     }
     .expansion-panel {
         margin-bottom: 0;
+    }
+     ::ng-deep .mat-step-label {
+        display: none !important;
+    }
+    h3 {
+        display: block;
+        text-align: center;
+        color: #979797;
     }
 }

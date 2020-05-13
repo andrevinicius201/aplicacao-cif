@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { QuestionService } from '../service/question.service';
+import { Question } from '../interfaces/question';
+import { Questions } from '../interfaces/questions';
+import { Observable } from 'rxjs';
+import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-evaluation',
@@ -20,19 +25,45 @@ export class EvaluationComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
 
-  constructor(private route:Router,private _formBuilder: FormBuilder) {
-    if(this.route.getCurrentNavigation().extras != "undefined"){
-      this.patientCPF = this.route.getCurrentNavigation().extras.state.patientCpf;
-    }
+  environmentalFactors: Question[];
+  activityAndParticipation: Question[];
+  bodyStructures: Question[];
+  bodyFunctions: Question[];
+
+  @ViewChild("factorPanel") factorPanel:MatExpansionPanel;
+  @ViewChild("aNpPanel") aNpPanel:MatExpansionPanel;
+  @ViewChild("structurePanel") structurePanel:MatExpansionPanel;
+  @ViewChild("functionPanel") functionPanel:MatExpansionPanel;
+
+  constructor(
+    private route:Router,
+    private _formBuilder: FormBuilder,
+    private questionService: QuestionService) {
+      if(this.route.getCurrentNavigation().extras != "undefined" && 
+      this.route.getCurrentNavigation().extras.state != null){
+        this.patientCPF = this.route.getCurrentNavigation().extras.state.patientCpf;
+      }
+
+      this.firstFormGroup = this._formBuilder.group({
+        firstCtrl: ['', Validators.required]
+      });
+      this.secondFormGroup = this._formBuilder.group({
+        secondCtrl: ['', Validators.required]
+      });
   }
 
   ngOnInit(): void {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
+    this.questionService.listQuestions().subscribe(
+      res => {
+        this.environmentalFactors = res.environmentalFactors;
+        this.activityAndParticipation = res.activityAndParticipation;
+        this.bodyStructures = res.bodyStructures;
+        this.bodyFunctions = res.bodyFunctions;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
 

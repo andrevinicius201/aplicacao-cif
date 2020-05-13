@@ -4,6 +4,9 @@
             <ng-template matStepLabel>
                 <span matTooltip="{{stepOne}}">{{stepOne}}</span>
             </ng-template>
+
+            <h3 matTooltip="{{stepOne}}">{{stepOne}}</h3>
+
             <mat-card>
                 <mat-form-field>
                     <mat-label>CPF do Paciente</mat-label>
@@ -24,10 +27,23 @@
             <ng-template matStepLabel>
                 <span matTooltip="{{stepTwo}}">{{stepTwo}}</span>
             </ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
+
+            <h3 matTooltip="{{stepTwo}}">{{stepTwo}}</h3>
+
+            <mat-accordion>
+                <mat-expansion-panel #factorPanel *ngFor="let factor of environmentalFactors">
+                    <mat-expansion-panel-header *ngIf="!factorPanel.expanded">
+                        <mat-panel-title *ngIf="!factorPanel.expanded">
+                            {{ factor.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!factorPanel.expanded">
+                            {{factor.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ factor.code }} - <span class="inner-title">{{ factor.title }}</span></p>
+                </mat-expansion-panel>
+            </mat-accordion>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
@@ -39,10 +55,23 @@
             <ng-template matStepLabel>
                 <span matTooltip="{{stepThree}}">{{stepThree}}</span>
             </ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
+
+            <h3 matTooltip="{{stepThree}}">{{stepThree}}</h3>
+
+            <mat-accordion>
+                <mat-expansion-panel #aNpPanel *ngFor="let aNp of activityAndParticipation">
+                    <mat-expansion-panel-header *ngIf="!aNpPanel.expanded">
+                        <mat-panel-title *ngIf="!aNpPanel.expanded">
+                            {{ aNp.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!aNpPanel.expanded">
+                            {{aNp.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ aNp.code }} - <span class="inner-title">{{ aNp.title }}</span></p>
+                </mat-expansion-panel>
+            </mat-accordion>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
@@ -54,10 +83,23 @@
             <ng-template matStepLabel>
                 <span matTooltip="{{stepFour}}">{{stepFour}}</span>
             </ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
+
+            <h3 matTooltip="{{stepFour}}">{{stepFour}}</h3>
+
+            <mat-accordion>
+                <mat-expansion-panel #structurePanel *ngFor="let structure of bodyStructures">
+                    <mat-expansion-panel-header *ngIf="!structurePanel.expanded">
+                        <mat-panel-title *ngIf="!structurePanel.expanded">
+                            {{ structure.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!structurePanel.expanded">
+                            {{structure.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ structure.code }} - <span class="inner-title">{{ structure.title }}</span></p>
+                </mat-expansion-panel>
+            </mat-accordion>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
@@ -69,10 +111,23 @@
             <ng-template matStepLabel>
                 <span matTooltip="{{stepFive}}">{{stepFive}}</span>
             </ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
+
+            <h3 matTooltip="{{stepFive}}">{{stepFive}}</h3>
+
+            <mat-accordion>
+                <mat-expansion-panel #functionPanel *ngFor="let function of bodyFunctions">
+                    <mat-expansion-panel-header *ngIf="!functionPanel.expanded">
+                        <mat-panel-title *ngIf="!functionPanel.expanded">
+                            {{ function.code }}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!functionPanel.expanded">
+                            {{ function.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ function.code }} - <span class="inner-title">{{ function.title }}</span></p>
+                </mat-expansion-panel>
+            </mat-accordion>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>

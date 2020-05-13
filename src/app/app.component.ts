@@ -101,6 +101,10 @@ export class AppComponent implements OnChanges {
     this.route.navigate(['patientRegister']);
   }
 
+  redirectToEvaluation() {
+    this.route.navigate(['evaluation']);
+  }
+
   redirectToPatientList(){
     this.route.navigate(['patientList']);
   }
