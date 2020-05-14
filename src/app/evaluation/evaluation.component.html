@@ -10,11 +10,11 @@
             <mat-card>
                 <mat-form-field>
                     <mat-label>CPF do Paciente</mat-label>
-                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                    <input mask="000.000.000-00" maxlength="14" matTooltip="CPF sem pontuação" matTooltipPosition="after" matInput placeholder="CPF" #cpf formControlName="cpf" required>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Local da Avaliação</mat-label>
-                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                    <input (change)="searchLocal($event)" matInput placeholder="Local da Avaliação" formControlName="evaluationLocal" required>
                 </mat-form-field>
                 <div>
                     <button mat-button matStepperNext>Next</button>

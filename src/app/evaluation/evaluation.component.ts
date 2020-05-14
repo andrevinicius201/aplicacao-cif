@@ -6,6 +6,7 @@ import { Question } from '../interfaces/question';
 import { Questions } from '../interfaces/questions';
 import { Observable } from 'rxjs';
 import { MatExpansionPanel } from '@angular/material';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-evaluation',
@@ -39,20 +40,28 @@ export class EvaluationComponent implements OnInit {
     private route:Router,
     private _formBuilder: FormBuilder,
     private questionService: QuestionService) {
-      if(this.route.getCurrentNavigation().extras != "undefined" && 
-      this.route.getCurrentNavigation().extras.state != null){
-        this.patientCPF = this.route.getCurrentNavigation().extras.state.patientCpf;
-      }
-
       this.firstFormGroup = this._formBuilder.group({
-        firstCtrl: ['', Validators.required]
+        cpf: ['', Validators.required],
+        evaluationLocal: ['',Validators.required],
       });
       this.secondFormGroup = this._formBuilder.group({
-        secondCtrl: ['', Validators.required]
+        evaluationLocal: ['', Validators.required]
       });
+
+
+      if(this.route.getCurrentNavigation().extras != "undefined" && 
+      this.route.getCurrentNavigation().extras.state != null){
+        this.firstFormGroup.controls['cpf'].setValue(this.route.getCurrentNavigation().extras.state.patientCpf)
+      }
+  }
+
+  searchLocal(teste:any){
+    console.log(this.firstFormGroup.controls['evaluationLocal'])
+    console.log(teste);
   }
 
   ngOnInit(): void {
+    console.log(this.firstFormGroup)
     this.questionService.listQuestions().subscribe(
       res => {
         this.environmentalFactors = res.environmentalFactors;
