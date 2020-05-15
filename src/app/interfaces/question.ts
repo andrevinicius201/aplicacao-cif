@@ -1,6 +1,4 @@
 export interface Question {
-}
-export interface RootObject {
     id: string;
 	code: string;
 	title: string;

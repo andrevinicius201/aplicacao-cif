@@ -7,6 +7,9 @@ import { Questions } from '../interfaces/questions';
 import { Observable } from 'rxjs';
 import { MatExpansionPanel } from '@angular/material';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Patient } from '../interfaces/patient';
+import { Person } from '../interfaces/person';
+import { PatientListService } from '../service/patient-list.service';
 
 @Component({
   selector: 'app-evaluation',
@@ -15,16 +18,20 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 })
 export class EvaluationComponent implements OnInit {
 
-  public stepOne = "Informações da Avaliação";
-  public stepTwo = "Fatores Ambientais";
-  public stepThree = "Atividade E Participação";
-  public stepFour = "Estruturas Do Corpo";
-  public stepFive = "Funções do Corpo";
+  stepOne = "Informações da Avaliação";
+  stepTwo = "Fatores Ambientais";
+  stepThree = "Atividade E Participação";
+  stepFour = "Estruturas Do Corpo";
+  stepFive = "Funções do Corpo";
   
+  loading: boolean;
   panelOpenState = false;
-  patientCPF: String; 
+  patient: Person; 
+
+  public patients: Person[];
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  
 
   environmentalFactors: Question[];
   activityAndParticipation: Question[];
@@ -39,7 +46,8 @@ export class EvaluationComponent implements OnInit {
   constructor(
     private route:Router,
     private _formBuilder: FormBuilder,
-    private questionService: QuestionService) {
+    private questionService: QuestionService,
+    private patientService: PatientListService) {
       this.firstFormGroup = this._formBuilder.group({
         cpf: ['', Validators.required],
         evaluationLocal: ['',Validators.required],
@@ -51,7 +59,9 @@ export class EvaluationComponent implements OnInit {
 
       if(this.route.getCurrentNavigation().extras != "undefined" && 
       this.route.getCurrentNavigation().extras.state != null){
-        this.firstFormGroup.controls['cpf'].setValue(this.route.getCurrentNavigation().extras.state.patientCpf)
+        console.log("PATIENT",this.route.getCurrentNavigation().extras.state.patient);
+        this.patient = this.route.getCurrentNavigation().extras.state.patient;
+        this.firstFormGroup.controls['cpf'].setValue(this.patient.id);
       }
   }
 
@@ -62,18 +72,37 @@ export class EvaluationComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.firstFormGroup)
+    this.listQuestions();
+    this.listPatients();
+  }
+
+  private listQuestions(){
+    this.loading = true;
     this.questionService.listQuestions().subscribe(
       res => {
+        this.loading = false;
         this.environmentalFactors = res.environmentalFactors;
         this.activityAndParticipation = res.activityAndParticipation;
         this.bodyStructures = res.bodyStructures;
         this.bodyFunctions = res.bodyFunctions;
       },
       err => {
+        this.loading = false;
         console.log(err);
       }
     );
   }
 
-
+  private listPatients(){
+    this.patientService.getPatientList()
+    .subscribe(
+      data => {
+        console.log(data);
+        this.patients = data;
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
 }

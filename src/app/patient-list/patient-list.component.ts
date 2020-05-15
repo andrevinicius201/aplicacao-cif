@@ -5,6 +5,8 @@ import { PatientListService } from '../service/patient-list.service';
 import { MatSnackBar } from '@angular/material';
 import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
+import { Patient } from '../interfaces/patient';
+import { Person } from '../interfaces/person';
 
 @Component({
   selector: 'app-patient-list',
@@ -14,39 +16,43 @@ import { RemoveAccountService } from '../service/remove-account.service';
 export class PatientListComponent implements OnInit {
   searchTerm: string;
   public patients = [];
-
+  loading: boolean;
   constructor(
     private openModalService: OpenModalService,
-    private session:SessionService,
-    private router:Router,
-    private _patientlist:PatientListService,
+    private session: SessionService,
+    private router: Router,
+    private _patientlist: PatientListService,
     private removeAccount: RemoveAccountService,
     private snackbar: MatSnackBar
-    ){}
+  ) { }
 
-  ngOnInit(){
-    console.log(this.session.getUserLogged());
-    if(this.session.getUserLogged() == null){
+  ngOnInit() {
+    if (this.session.getUserLogged() == null) {
       this.router.navigate(['']);
     }
-    
-    if(localStorage.getItem('role') == 'PATIENT'){
+
+    if (localStorage.getItem('role') == 'PATIENT') {
       this.router.navigate(['evaluations']);
     }
-
+    this.loading = true;
     this._patientlist.getPatientList()
-        .subscribe(data => this.patients = data);
+      .subscribe(
+        data => {
+          this.loading = false;
+          this.patients = data
+        }
+      );
   }
 
-  deletePatient(id:String){
+  deletePatient(id: String) {
     const data = {
       text: 'Tem certeza que deseja excluir o paciente?',
       title: 'Excluir paciente',
       buttonYes: 'Sim',
       buttonNo: 'Não'
     }
-    this.openModalService.openDialog(data).subscribe(res=>{
-      if(res){
+    this.openModalService.openDialog(data).subscribe(res => {
+      if (res) {
         console.log("exclusao solicitada")
         this.removeAccount.removeAccount(id)
           .subscribe(
@@ -57,14 +63,14 @@ export class PatientListComponent implements OnInit {
               });
             }
           );
-      }else{
+      } else {
         console.log('Paciente não excluido');
       }
     })
   }
 
-  newEvaluation(patientCPF: String){
-    this.router.navigate(['evaluation'], {state: {patientCpf: patientCPF}})
+  newEvaluation(patient: Person) {
+    this.router.navigate(['evaluation'], { state: { patient: patient } })
   }
 
 }
