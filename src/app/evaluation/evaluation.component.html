@@ -37,7 +37,17 @@
                 <span matTooltip="{{stepTwo}}">{{stepTwo}}</span>
             </ng-template>
 
-            <h3 matTooltip="{{stepTwo}}">{{stepTwo}}</h3>
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepTwo}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Constituem o ambiente físico, social e de atitudes em que as pessoas vivem e conduzem sua vida.</p>
+                    <p class="bold-font">Quanto estes fatores são facilitadores e/ou barreiras na sua vida... </p>
+                    <p>Você também pode classificar os fatores ambientais como um facilitador e uma barreira, se aplicável.</p>
+                </mat-card-subtitle>
+            </mat-card>
 
             <mat-accordion>
                 <mat-expansion-panel #factorPanel *ngFor="let factor of environmentalFactors">
@@ -51,6 +61,49 @@
                     </mat-expansion-panel-header>
 
                     <p>{{ factor.code }} - <span class="inner-title">{{ factor.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ factor.description }}</p>
+                    <p *ngIf="factor.inclusion != null"><span class="bold-font">Inclusões: </span>{{ factor.inclusion }}</p>
+                    <p *ngIf="factor.exclusion != null"><span class="bold-font">Exclusões: </span>{{ factor.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div fxLayoutAlign="end" class="general-grade">
+                        <span class="bold-font grade">Geral</span>
+                        <mat-radio-group class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="0.5">+1</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="1.5">+2</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="3.5">+3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">+4</mat-radio-button>
+                            <mat-radio-button color="warn" value="4.5">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-select class="grade-select">
+                            <mat-option value="0">0</mat-option>
+                            <mat-option value="0.5">+1</mat-option>
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="1.5">+2</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="3.5">+3</mat-option>
+                            <mat-option value="4">+4</mat-option>
+                            <mat-option value="4.5">4</mat-option>
+                            <mat-option value="8">8</mat-option>
+                            <mat-option value="9">9</mat-option>
+                        </mat-select>
+                    </div>
+
+
+
+
                 </mat-expansion-panel>
             </mat-accordion>
             <div>
@@ -65,7 +118,18 @@
                 <span matTooltip="{{stepThree}}">{{stepThree}}</span>
             </ng-template>
 
-            <h3 matTooltip="{{stepThree}}">{{stepThree}}</h3>
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepThree}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Execução de uma tarefa ou ação por um indivíduo e envolvimento e envolvimento numa situação da vital</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                    <p>P = DESEMPENHO EM ...</p>
+                    <p>C = CAPACIDADE DE ...</p>
+                </mat-card-subtitle>
+            </mat-card>
 
             <mat-accordion>
                 <mat-expansion-panel #aNpPanel *ngFor="let aNp of activityAndParticipation">
@@ -93,7 +157,16 @@
                 <span matTooltip="{{stepFour}}">{{stepFour}}</span>
             </ng-template>
 
-            <h3 matTooltip="{{stepFour}}">{{stepFour}}</h3>
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepFour}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>As estruturas do corpo são partes anatômicas do corpo, como, orgãos, membros e seus componentes</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                </mat-card-subtitle>
+            </mat-card>
 
             <mat-accordion>
                 <mat-expansion-panel #structurePanel *ngFor="let structure of bodyStructures">
@@ -121,7 +194,16 @@
                 <span matTooltip="{{stepFive}}">{{stepFive}}</span>
             </ng-template>
 
-            <h3 matTooltip="{{stepFive}}">{{stepFive}}</h3>
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepFive}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Funções fisiológicas dos sistema corporais (incluindo as funções psicológicas)</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                </mat-card-subtitle>
+            </mat-card>
 
             <mat-accordion>
                 <mat-expansion-panel #functionPanel *ngFor="let function of bodyFunctions">

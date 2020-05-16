@@ -30,7 +30,7 @@ h3 {
 }
 
 .mat-expansion-panel {
-    margin-bottom: 3%;
+    margin-bottom: 20px;
 }
 
 .mat-expansion-panel-header-title {
@@ -55,7 +55,40 @@ h3 {
     display: grid;
 }
 
+.general-grade {
+    margin-top: 10px;
+}
+
+.bold-font {
+    font-weight: bold;
+    color: #979797;
+}
+
+.grade {
+    font-size: medium;
+}
+
+.grade-select {
+    display: none;
+    text-align: center;
+}
+
+.session-description {
+    margin-bottom: 20px;
+}
+
+.mat-radio-button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 @media(max-width: 768px) {
+    .grade-radio {
+        display: none;
+    }
+    .grade-select {
+        display: block;
+    }
     .panel-description {
         display: none;
     }
