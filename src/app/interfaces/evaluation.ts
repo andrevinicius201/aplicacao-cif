@@ -2,7 +2,7 @@ import { Answer } from './answer';
 
 export interface Evaluation {
     id:string;
-    date:Date;
+    date:string;
     location:string;
     therapistId:string;
     patientId:string;

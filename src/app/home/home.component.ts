@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit {
   constructor(private session:SessionService, private router:Router){}
 
   ngOnInit(){
-    console.log(this.session.getUserLogged());
     if(this.session.getUserLogged() == null){
       this.router.navigate(['']);
     }else if(localStorage.getItem('role') == 'PATIENT'){

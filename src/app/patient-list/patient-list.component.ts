@@ -53,7 +53,6 @@ export class PatientListComponent implements OnInit {
     }
     this.openModalService.openDialog(data).subscribe(res => {
       if (res) {
-        console.log("exclusao solicitada")
         this.removeAccount.removeAccount(id)
           .subscribe(
             () => {

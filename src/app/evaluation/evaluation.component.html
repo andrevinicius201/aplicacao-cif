@@ -1,10 +1,10 @@
-<div *ngIf="loading" class="spinner" fxLayoutAlign="center">
+<div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
     <mat-spinner></mat-spinner>
 </div>
 
-<mat-horizontal-stepper *ngIf="!loading" class="main-stepper" linear="false" #stepper>
-    <mat-step fxLayoutAlign="center" [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
+<mat-horizontal-stepper *ngIf="loaded" class="main-stepper" linear="false" #stepper>
+    <mat-step fxLayoutAlign="center" [stepControl]="ieFormGroup">
+        <form [formGroup]="ieFormGroup" autocomplete="off">
             <ng-template matStepLabel>
                 <span matTooltip="{{stepOne}}">{{stepOne}}</span>
             </ng-template>
@@ -14,25 +14,31 @@
             <mat-card>
                 <mat-form-field>
                     <mat-label>Paciente</mat-label>
-                    <mat-select formControlName="cpf">
+                    <mat-select formControlName="patientId">
                         <mat-option *ngFor="let patient of patients" [value]="patient.id">
                             {{ patient.firstName }} - {{ patient.cpf | mask: '000.000.000-00' }}
                         </mat-option>
                     </mat-select>
-                    <!-- <input mask="000.000.000-00" maxlength="14" matTooltip="CPF sem pontuação" matTooltipPosition="after" matInput placeholder="CPF" #cpf formControlName="cpf" required> -->
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Local da Avaliação</mat-label>
-                    <input (change)="searchLocal($event)" matInput placeholder="Local da Avaliação" formControlName="evaluationLocal" required>
+                    <input matInput placeholder="Local da Avaliação" formControlName="location" required>
                 </mat-form-field>
-                <div>
-                    <button mat-button matStepperNext>Next</button>
+
+                <div class="nextStep">
+                    <button mat-button mat-button (click)="goBack2Home()" mat-stroked-button color="warn" class="btn-block btn-cancel">
+                        Cancelar
+                    </button>
+                    <span class="spacer"></span>
+                    <button mat-button matStepperNext [disabled]="!ieFormGroup.valid" mat-stroked-button (click)="showFirstForm();addIEtoBounderObject()" color="warn" class="btn-block btn-next">
+                        Próximo
+                    </button>
                 </div>
             </mat-card>
         </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
+    <mat-step [stepControl]="efFormGroup">
+        <form [formGroup]="efFormGroup">
             <ng-template matStepLabel>
                 <span matTooltip="{{stepTwo}}">{{stepTwo}}</span>
             </ng-template>
@@ -70,9 +76,9 @@
 
                     <mat-divider></mat-divider>
 
-                    <div fxLayoutAlign="end" class="general-grade">
-                        <span class="bold-font grade">Geral</span>
-                        <mat-radio-group class="grade-radio" aria-label="Select an option">
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="generalGrade">
+                        <span class="bold-font grade grade-radio">Geral</span>
+                        <mat-radio-group [formControlName]="environmentalFactors.indexOf(factor)" class="grade-radio" aria-label="Select an option">
                             <mat-radio-button color="warn" value="0">0</mat-radio-button>
                             <mat-radio-button color="warn" value="0.5">+1</mat-radio-button>
                             <mat-radio-button color="warn" value="1">1</mat-radio-button>
@@ -86,34 +92,73 @@
                             <mat-radio-button color="warn" value="9">9</mat-radio-button>
                         </mat-radio-group>
 
-                        <mat-select class="grade-select">
-                            <mat-option value="0">0</mat-option>
-                            <mat-option value="0.5">+1</mat-option>
-                            <mat-option value="1">1</mat-option>
-                            <mat-option value="1.5">+2</mat-option>
-                            <mat-option value="2">2</mat-option>
-                            <mat-option value="3">3</mat-option>
-                            <mat-option value="3.5">+3</mat-option>
-                            <mat-option value="4">+4</mat-option>
-                            <mat-option value="4.5">4</mat-option>
-                            <mat-option value="8">8</mat-option>
-                            <mat-option value="9">9</mat-option>
-                        </mat-select>
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Geral
+                            </mat-label>
+                            <mat-select [formControlName]="environmentalFactors.indexOf(factor)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="0.5">+1</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="1.5">+2</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="3.5">+3</mat-option>
+                                <mat-option value="4">+4</mat-option>
+                                <mat-option value="4.5">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="environmentalFactors.indexOf(factor)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
 
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="environmentalFactors.indexOf(factor)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
 
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="environmentalFactors.indexOf(factor)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
 
                 </mat-expansion-panel>
             </mat-accordion>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(efFormGroup,environmentalFactors)" matTooltipPosition="before" *ngIf="!efFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(efFormGroup)" *ngIf="efFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
+
+    <mat-step [stepControl]="apFormGroup">
+        <form [formGroup]="apFormGroup">
             <ng-template matStepLabel>
                 <span matTooltip="{{stepThree}}">{{stepThree}}</span>
             </ng-template>
@@ -143,16 +188,116 @@
                     </mat-expansion-panel-header>
 
                     <p>{{ aNp.code }} - <span class="inner-title">{{ aNp.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ aNp.description }}</p>
+                    <p *ngIf="aNp.inclusion != null"><span class="bold-font">Inclusões: </span>{{ aNp.inclusion }}</p>
+                    <p *ngIf="aNp.exclusion != null"><span class="bold-font">Exclusões: </span>{{ aNp.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="cGrade">
+                        <span class="bold-font grade grade-radio">C</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                C
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="pGrade">
+                        <span class="bold-font grade grade-radio">P</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                P
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="activityAndParticipation.indexOf(aNp)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
                 </mat-expansion-panel>
             </mat-accordion>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(apFormGroup,activityAndParticipation)" matTooltipPosition="before" *ngIf="!apFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(apFormGroup)" *ngIf="apFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
+    <mat-step [stepControl]="bsFormGroup">
+        <form [formGroup]="bsFormGroup">
             <ng-template matStepLabel>
                 <span matTooltip="{{stepFour}}">{{stepFour}}</span>
             </ng-template>
@@ -180,16 +325,143 @@
                     </mat-expansion-panel-header>
 
                     <p>{{ structure.code }} - <span class="inner-title">{{ structure.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p *ngIf="structure.description != null" class="bold-font">{{ structure.description }}</p>
+                    <p *ngIf="structure.inclusion != null"><span class="bold-font">Inclusões: </span>{{ structure.inclusion }}</p>
+                    <p *ngIf="structure.exclusion != null"><span class="bold-font">Exclusões: </span>{{ structure.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="locationGrade">
+                        <span class="bold-font grade grade-radio">Localização</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Localização
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="natureGrade">
+                        <span class="bold-font grade grade-radio">Natureza</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Natureza
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="extensionGrade">
+                        <span class="bold-font grade grade-radio">Extensão</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Extensão
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="bodyStructures.indexOf(structure)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
                 </mat-expansion-panel>
             </mat-accordion>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(bsFormGroup,bodyStructures)" matTooltipPosition="before" *ngIf="!bsFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(bsFormGroup)" *ngIf="bsFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
+    <mat-step [stepControl]="bfFormGroup">
+        <form [formGroup]="bfFormGroup">
             <ng-template matStepLabel>
                 <span matTooltip="{{stepFive}}">{{stepFive}}</span>
             </ng-template>
@@ -217,11 +489,85 @@
                     </mat-expansion-panel-header>
 
                     <p>{{ function.code }} - <span class="inner-title">{{ function.title }}</span></p>
+
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ function.description }}</p>
+                    <p *ngIf="function.inclusion != null"><span class="bold-font">Inclusões: </span>{{ function.inclusion }}</p>
+                    <p *ngIf="function.exclusion != null"><span class="bold-font">Exclusões: </span>{{ function.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="generalGrade">
+                        <span class="bold-font grade grade-radio">Geral</span>
+                        <mat-radio-group [formControlName]="bodyFunctions.indexOf(function)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Geral
+                            </mat-label>
+                            <mat-select [formControlName]="bodyFunctions.indexOf(function)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="bodyFunctions.indexOf(function)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="bodyFunctions.indexOf(function)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="bodyFunctions.indexOf(function)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
+
                 </mat-expansion-panel>
             </mat-accordion>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(bfFormGroup,bodyFunctions)" matTooltipPosition="before" *ngIf="!bfFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(bfFormGroup)" *ngIf="bfFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
             </div>
         </form>
     </mat-step>
