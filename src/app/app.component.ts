@@ -21,7 +21,7 @@ import {Location} from '@angular/common';
 
 export class AppComponent implements OnChanges {
   title = 'aplicacao-cif-mackenzie';
-  pageTitle: String;
+  pageTitle: string;
 
   public greetings: string;
   private hours: number;

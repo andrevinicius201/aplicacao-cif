@@ -95,17 +95,18 @@ mat-icon.icon-side-menu {
 /* Breadcrumb */
 /* Style the list */
 ul.breadcrumb {
-    padding: 10px 16px;
+    padding: 2px;
     list-style: none;
     background-color: #eee;
     /* font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
     font-family: roboto;
+    font-size: xx-small;
 }
   
   /* Display list items side by side */
   ul.breadcrumb li {
     display: inline;
-    font-size: 18px;
+    font-size: small;
   }
   
   /* Add a slash symbol (/) before/behind each list item */

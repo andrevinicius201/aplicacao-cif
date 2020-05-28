@@ -33,10 +33,13 @@
                 <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
             </mat-menu>
         </mat-toolbar>
-        <ul class="breadcrumb">
-            <li>Home</li>
-            <li>{{pageTitle | titlecase}}</li>
-        </ul>
+        <div *ngIf="pageTitle.length != 0">
+            <ul class="breadcrumb">
+                <li>Home</li>
+                <li>{{pageTitle | titlecase}}</li>
+            </ul>
+        </div>
+        
         
         <router-outlet (activate)="onActivate($event)"></router-outlet>
     </mat-sidenav-content>
