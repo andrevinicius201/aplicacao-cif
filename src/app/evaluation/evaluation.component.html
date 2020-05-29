@@ -1,7 +1,6 @@
 <div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
     <mat-spinner></mat-spinner>
 </div>
-
 <mat-horizontal-stepper *ngIf="loaded" class="main-stepper" linear="false" #stepper>
     <mat-step fxLayoutAlign="center" [stepControl]="ieFormGroup">
         <form [formGroup]="ieFormGroup" autocomplete="off">
@@ -15,7 +14,7 @@
                 <mat-form-field>
                     <mat-label>Paciente</mat-label>
                     <mat-select formControlName="patientId">
-                        <mat-option *ngFor="let patient of patients" [value]="patient.id">
+                        <mat-option *ngFor="let patient of patients" [value]="patient.firstName">
                             {{ patient.firstName }} - {{ patient.cpf | mask: '000.000.000-00' }}
                         </mat-option>
                     </mat-select>
@@ -572,11 +571,60 @@
         </form>
     </mat-step>
     <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
+        <ng-template matStepLabel>Revisão</ng-template>
         <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button mat-stroked-button matStepperPrevious color="warn">Voltar</button>
+            <button mat-button mat-stroked-button (click)="newEvaluation()" color="warn">Salvar Avaliação</button>
+            <button mat-button mat-stroked-button (click)="download()" color="warn">Baixar Avaliação</button>
+        </div>
+        <div id="print" #print>
+            <h1 class="header-title display-5">Avaliação Funcional</h1>
+            <hr>
+            <div class="first-header">
+                <p><span class="bold-font">Paciente: </span>{{ evaluation.patientId }}</p>
+                <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistId }}</p>
+                <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
+                <p><span class="bold-font">Data: </span>{{ evaluation.date }}</p>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepTwo}}">{{stepTwo}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, environmentalFactors)!=null">{{ getQuestionCode(answer, environmentalFactors) }} - {{ getQuestionTitle(answer, environmentalFactors) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, environmentalFactors)!=null">
+                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepThree}}">{{stepThree}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">{{ getQuestionCode(answer, activityAndParticipation) }} - {{ getQuestionTitle(answer, activityAndParticipation) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">
+                    <span class="bold-font">C: </span>{{ answer.cGrade }}
+                <span class="bold-font">P: </span>{{ answer.pGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepFour}}">{{stepFour}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, bodyStructures)!=null">{{ getQuestionCode(answer, bodyStructures) }} - {{ getQuestionTitle(answer, bodyStructures) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, bodyStructures)!=null">
+                    <span class="bold-font">Localização: </span>{{ answer.locationGrade }}
+                <span class="bold-font">Natureza: </span>{{ answer.natureGrade }}
+                <span class="bold-font">Extensão: </span>{{ answer.extensionGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepFive}}">{{stepFive}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">{{ getQuestionCode(answer, bodyFunctions) }} - {{ getQuestionTitle(answer, bodyFunctions) }}</span>
+                <br>
+                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">
+                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
+                </span>
+            </div>
         </div>
     </mat-step>
 </mat-horizontal-stepper>

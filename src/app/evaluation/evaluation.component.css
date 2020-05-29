@@ -107,6 +107,26 @@ h3 {
     margin: 20px 0 20px 0;
 }
 
+.header-title {
+    text-align: center;
+}
+
+.text-left {
+    float: left;
+}
+
+.text-right {
+    float: right;
+}
+
+.space {
+    display: flex;
+}
+
+.first-header {
+    margin-bottom: 40px;
+}
+
 @media(max-width: 768px) {
     .grade-radio {
         display: none;
@@ -124,6 +144,12 @@ h3 {
     }
      ::ng-deep .mat-step-label {
         display: none !important;
+    }
+    .space {
+        margin-bottom: 10px;
+    }
+    .first-header {
+        margin-bottom: 0;
     }
     h3 {
         display: block;

@@ -101,6 +101,7 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
     LayoutModule,
     MatProgressBarModule,
     MatCardModule,
+
   ],
   providers: [
     SessionService,
