@@ -6,6 +6,7 @@ import {MatCardModule} from '@angular/material/card';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
 import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-patient-list',

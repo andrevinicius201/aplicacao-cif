@@ -69,7 +69,20 @@ export class AppComponent implements OnChanges {
     if (this.sessionService.getUserLogged() == null) {
       return this.route.navigate(['']);
     }
-    this.pageTitle = window.location.pathname.replace("/","");
+    var title = window.location.pathname.replace("/","");
+    console.log(title);
+    switch(title){
+      case("patientList"): 
+        return this.pageTitle = 'Pacientes';
+      case("editProfile"): 
+        return this.pageTitle = 'Editar Perfil';
+      case("patientRegister"): 
+        return this.pageTitle = 'Cadastro De Pacientes';
+      case("evaluations"): 
+        return this.pageTitle = 'Avaliações';
+      case("home"):
+        return this.pageTitle = '';
+    }
   }
 
 
@@ -157,4 +170,4 @@ export class AppComponent implements OnChanges {
         }
       })
     }
-}
+  }

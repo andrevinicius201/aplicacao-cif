@@ -35,12 +35,12 @@
         </mat-toolbar>
         <div *ngIf="pageTitle.length != 0">
             <ul class="breadcrumb">
-                <li>Home</li>
+                <li><a href="/">Home</a></li>
                 <li>{{pageTitle | titlecase}}</li>
             </ul>
         </div>
-        
-        
+
+
         <router-outlet (activate)="onActivate($event)"></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
