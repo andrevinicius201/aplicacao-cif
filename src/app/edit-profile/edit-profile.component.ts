@@ -8,7 +8,6 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
 import { EditProfileService } from '../service/edit-profile.service';
-import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
 import { Router } from '@angular/router';
 
@@ -41,7 +40,6 @@ export class EditProfileComponent implements OnInit {
  
   
   constructor(
-    private openModalService: OpenModalService,
     private removeAccount: RemoveAccountService,
     private cepService:CepService, 
     private snackbar:MatSnackBar, 
@@ -168,12 +166,18 @@ export class EditProfileComponent implements OnInit {
             duration: 2000,
             panelClass: ['green-snackbar']
           });
+          location.reload();
         },
         (erro: any) => {
           this.loading = false;
           console.log(erro);
         }
       )
+  }
+
+  cancelUpdate(){
+    console.log("refresh solicitado");
+    location.reload();
   }
 
 }

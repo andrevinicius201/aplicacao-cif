@@ -28,10 +28,19 @@
             <span *ngIf="greetings != null && isLogged" class="greeting-span">{{ greetings }}</span>
             <button *ngIf="isLogged" mat-button class="menu-greeting" [matMenuTriggerFor]="menu"><mat-icon class="person-icon">person</mat-icon></button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="viewProfile()"><mat-icon>person_outline</mat-icon> Perfil</button>
+                <button mat-menu-item (click)="viewProfile()"><mat-icon>person_outline</mat-icon> Editar perfil </button>
+                <button mat-menu-item (click)="deleteTherapist()"><mat-icon>delete_forever</mat-icon> Excluir perfil </button>
                 <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
             </mat-menu>
         </mat-toolbar>
+        <div *ngIf="pageTitle.length != 0">
+            <ul class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li>{{pageTitle | titlecase}}</li>
+            </ul>
+        </div>
+
+
         <router-outlet (activate)="onActivate($event)"></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

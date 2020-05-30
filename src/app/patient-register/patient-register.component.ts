@@ -96,7 +96,7 @@ export class PatientRegisterComponent implements OnInit {
       'lastName': new FormControl(this.person.lastName, [Validators.required]),
       'cpf': new FormControl(this.person.lastName, [Validators.required, Validators.pattern('[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}')]),
       'sex': new FormControl(this.person.sex, [Validators.required]),
-      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(14)]),
       'birthDate': new FormControl(this.person.birthDate, [Validators.required]),
       'patient': new FormGroup({
         'therapistID': new FormControl(''),
@@ -120,6 +120,8 @@ export class PatientRegisterComponent implements OnInit {
     if(localStorage.getItem('role') == 'PATIENT'){
       this.router.navigate(['evaluations']);
     }
+
+  
   }
 
   goBack2Login(){

@@ -31,6 +31,7 @@ import {
   MatCard,
   MatCardModule,
   MatDialogModule,
+  MatTreeModule,
   MatExpansionModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
@@ -101,7 +102,7 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
     LayoutModule,
     MatProgressBarModule,
     MatCardModule,
-
+    MatTreeModule
   ],
   providers: [
     SessionService,

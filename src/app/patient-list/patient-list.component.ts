@@ -5,6 +5,7 @@ import { PatientListService } from '../service/patient-list.service';
 import { MatSnackBar } from '@angular/material';
 import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
+import {Title} from "@angular/platform-browser";
 import { Patient } from '../interfaces/patient';
 import { Person } from '../interfaces/person';
 
@@ -16,6 +17,7 @@ import { Person } from '../interfaces/person';
 export class PatientListComponent implements OnInit {
   searchTerm: string;
   public patients = [];
+  title:String = "Listagem de paciente";
   loading: boolean;
   constructor(
     private openModalService: OpenModalService,

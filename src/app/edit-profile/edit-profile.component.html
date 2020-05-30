@@ -6,7 +6,6 @@
         <mat-horizontal-stepper linear="true" #stepper>
             <mat-step [stepControl]="personForm">
                 <form [formGroup]="personForm">
-                    <button mat-button color="primary" (click)="deleteTherapist(user.id)">Excluir cadastro</button>
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
                         <input matInput placeholder="Nome" [ngModel]="user.firstName" formControlName="firstName">
@@ -63,7 +62,7 @@
                     </mat-form-field>
                     <div class="nextStep">
                         <span class="spacer"></span>
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
                             Próximo
                         </button>
                     </div>
@@ -107,14 +106,13 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button *ngIf="!loading" mat-button (click)="stepper.previous()" mat-stroked-button color="warn" class="btn-block">
-                            Limpar
-                        </button>
+                        
                         <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
                             Concluir
                         </button>
                     </div>
                 </form>
+                <button *ngIf="!loading" mat-button (click)="cancelUpdate()" mat-stroked-button color="warn" class="btn-block" style="margin-top:0.3em;"> Cancelar </button>
             </mat-step>
         </mat-horizontal-stepper>
     </mat-card>
