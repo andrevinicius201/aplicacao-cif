@@ -11,7 +11,6 @@ import { OpenModalService } from './shared/modal-dialog/open-modal-service.servi
 import { RemoveAccountService } from './service/remove-account.service';
 import {Location} from '@angular/common';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -92,6 +91,12 @@ export class AppComponent implements OnChanges {
     }
   }
 
+  openSideMenu(){
+    if(this.drawerElement != undefined){
+      this.drawerElement.open();
+    }
+  }
+
   islogged() {
     if (this.sessionService.getUserLogged() != null) {
       return true;
@@ -133,6 +138,10 @@ export class AppComponent implements OnChanges {
 
   redirectToPatientRegister() {
     this.route.navigate(['patientRegister']);
+  }
+
+  redirectToEvaluation() {
+    this.route.navigate(['evaluation']);
   }
 
   redirectToPatientList(){

@@ -92,7 +92,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log("rota direcionada");
     this._authservice.getUserData(this.session.userId)
           .subscribe(data => this.user = data);
     
@@ -117,6 +116,30 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
+  deleteTherapist(id:String){
+    const data = {
+      text: 'Tem certeza que deseja excluir seu cadastro?',
+      title: 'Excluir cadastro',
+      buttonYes: 'Sim',
+      buttonNo: 'Não'
+    }
+    this.openModalService.openDialog(data).subscribe(res=>{
+      if(res){
+        this.removeAccount.removeAccount(id)
+          .subscribe(
+            (res: any) => {
+              location.reload();
+              this.snackbar.open('Cadastro removido', 'OK ', {
+                duration: 2000,
+              });
+              this.session.logoutUser();
+            }
+          );
+      }else{
+        console.log('Cadastro não excluído');
+      }
+    })
+  }
 
   createAddressForm() {
     return new FormGroup({
@@ -136,7 +159,6 @@ export class EditProfileComponent implements OnInit {
     this.person.address = this.address;
     this.person.patient = this.patient;
     this.person.birthDate = new Date(this.person.birthDate).toISOString();
-    console.log(this.person);
     this.editProfileService.updateProfile(this.person)
       .subscribe(
         (res: any) => {

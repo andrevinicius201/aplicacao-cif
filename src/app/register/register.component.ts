@@ -161,7 +161,6 @@ export class RegisterComponent implements OnInit {
   }
 
   private login(login: string, password: string) {
-    console.log('tentando fazer login');
     this.authService.login(login, password)
       .subscribe(
         resp => {

@@ -1,0 +1,630 @@
+<div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+</div>
+<mat-horizontal-stepper *ngIf="loaded" class="main-stepper" linear="false" #stepper>
+    <mat-step fxLayoutAlign="center" [stepControl]="ieFormGroup">
+        <form [formGroup]="ieFormGroup" autocomplete="off">
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepOne}}">{{stepOne}}</span>
+            </ng-template>
+
+            <h3 matTooltip="{{stepOne}}">{{stepOne}}</h3>
+
+            <mat-card>
+                <mat-form-field>
+                    <mat-label>Paciente</mat-label>
+                    <mat-select formControlName="patientId">
+                        <mat-option *ngFor="let patient of patients" [value]="patient.firstName">
+                            {{ patient.firstName }} - {{ patient.cpf | mask: '000.000.000-00' }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Local da Avaliação</mat-label>
+                    <input matInput placeholder="Local da Avaliação" formControlName="location" required>
+                </mat-form-field>
+
+                <div class="nextStep">
+                    <button mat-button mat-button (click)="goBack2Home()" mat-stroked-button color="warn" class="btn-block btn-cancel">
+                        Cancelar
+                    </button>
+                    <span class="spacer"></span>
+                    <button mat-button matStepperNext [disabled]="!ieFormGroup.valid" mat-stroked-button (click)="showFirstForm();addIEtoBounderObject()" color="warn" class="btn-block btn-next">
+                        Próximo
+                    </button>
+                </div>
+            </mat-card>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="efFormGroup">
+        <form [formGroup]="efFormGroup">
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepTwo}}">{{stepTwo}}</span>
+            </ng-template>
+
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepTwo}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Constituem o ambiente físico, social e de atitudes em que as pessoas vivem e conduzem sua vida.</p>
+                    <p class="bold-font">Quanto estes fatores são facilitadores e/ou barreiras na sua vida... </p>
+                    <p>Você também pode classificar os fatores ambientais como um facilitador e uma barreira, se aplicável.</p>
+                </mat-card-subtitle>
+            </mat-card>
+
+            <mat-accordion>
+                <mat-expansion-panel #factorPanel *ngFor="let factor of environmentalFactors">
+                    <mat-expansion-panel-header *ngIf="!factorPanel.expanded">
+                        <mat-panel-title *ngIf="!factorPanel.expanded">
+                            {{ factor.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!factorPanel.expanded">
+                            {{factor.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ factor.code }} - <span class="inner-title">{{ factor.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ factor.description }}</p>
+                    <p *ngIf="factor.inclusion != null"><span class="bold-font">Inclusões: </span>{{ factor.inclusion }}</p>
+                    <p *ngIf="factor.exclusion != null"><span class="bold-font">Exclusões: </span>{{ factor.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="generalGrade">
+                        <span class="bold-font grade grade-radio">Geral</span>
+                        <mat-radio-group [formControlName]="environmentalFactors.indexOf(factor)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="0.5">+1</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="1.5">+2</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="3.5">+3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">+4</mat-radio-button>
+                            <mat-radio-button color="warn" value="4.5">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Geral
+                            </mat-label>
+                            <mat-select [formControlName]="environmentalFactors.indexOf(factor)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="0.5">+1</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="1.5">+2</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="3.5">+3</mat-option>
+                                <mat-option value="4">+4</mat-option>
+                                <mat-option value="4.5">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="environmentalFactors.indexOf(factor)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="environmentalFactors.indexOf(factor)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="environmentalFactors.indexOf(factor)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(efFormGroup,environmentalFactors)" matTooltipPosition="before" *ngIf="!efFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(efFormGroup)" *ngIf="efFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="apFormGroup">
+        <form [formGroup]="apFormGroup">
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepThree}}">{{stepThree}}</span>
+            </ng-template>
+
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepThree}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Execução de uma tarefa ou ação por um indivíduo e envolvimento e envolvimento numa situação da vital</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                    <p>P = DESEMPENHO EM ...</p>
+                    <p>C = CAPACIDADE DE ...</p>
+                </mat-card-subtitle>
+            </mat-card>
+
+            <mat-accordion>
+                <mat-expansion-panel #aNpPanel *ngFor="let aNp of activityAndParticipation">
+                    <mat-expansion-panel-header *ngIf="!aNpPanel.expanded">
+                        <mat-panel-title *ngIf="!aNpPanel.expanded">
+                            {{ aNp.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!aNpPanel.expanded">
+                            {{aNp.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ aNp.code }} - <span class="inner-title">{{ aNp.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ aNp.description }}</p>
+                    <p *ngIf="aNp.inclusion != null"><span class="bold-font">Inclusões: </span>{{ aNp.inclusion }}</p>
+                    <p *ngIf="aNp.exclusion != null"><span class="bold-font">Exclusões: </span>{{ aNp.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="cGrade">
+                        <span class="bold-font grade grade-radio">C</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                C
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="pGrade">
+                        <span class="bold-font grade grade-radio">P</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                P
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="activityAndParticipation.indexOf(aNp)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="activityAndParticipation.indexOf(aNp)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(apFormGroup,activityAndParticipation)" matTooltipPosition="before" *ngIf="!apFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(apFormGroup)" *ngIf="apFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="bsFormGroup">
+        <form [formGroup]="bsFormGroup">
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepFour}}">{{stepFour}}</span>
+            </ng-template>
+
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepFour}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>As estruturas do corpo são partes anatômicas do corpo, como, orgãos, membros e seus componentes</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                </mat-card-subtitle>
+            </mat-card>
+
+            <mat-accordion>
+                <mat-expansion-panel #structurePanel *ngFor="let structure of bodyStructures">
+                    <mat-expansion-panel-header *ngIf="!structurePanel.expanded">
+                        <mat-panel-title *ngIf="!structurePanel.expanded">
+                            {{ structure.code}}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!structurePanel.expanded">
+                            {{structure.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ structure.code }} - <span class="inner-title">{{ structure.title }}</span></p>
+
+                    <mat-divider></mat-divider>
+
+                    <p *ngIf="structure.description != null" class="bold-font">{{ structure.description }}</p>
+                    <p *ngIf="structure.inclusion != null"><span class="bold-font">Inclusões: </span>{{ structure.inclusion }}</p>
+                    <p *ngIf="structure.exclusion != null"><span class="bold-font">Exclusões: </span>{{ structure.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="locationGrade">
+                        <span class="bold-font grade grade-radio">Localização</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Localização
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="natureGrade">
+                        <span class="bold-font grade grade-radio">Natureza</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Natureza
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="extensionGrade">
+                        <span class="bold-font grade grade-radio">Extensão</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Extensão
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="bodyStructures.indexOf(structure)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="bodyStructures.indexOf(structure)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="bodyStructures.indexOf(structure)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(bsFormGroup,bodyStructures)" matTooltipPosition="before" *ngIf="!bsFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(bsFormGroup)" *ngIf="bsFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="bfFormGroup">
+        <form [formGroup]="bfFormGroup">
+            <ng-template matStepLabel>
+                <span matTooltip="{{stepFive}}">{{stepFive}}</span>
+            </ng-template>
+
+            <mat-card class="session-description">
+                <mat-card-title>
+                    <p>{{stepFive}}
+                    </p>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p>Funções fisiológicas dos sistema corporais (incluindo as funções psicológicas)</p>
+                    <p class="bold-font">Quanto prejuízo a pessoa tem em ...</p>
+                </mat-card-subtitle>
+            </mat-card>
+
+            <mat-accordion>
+                <mat-expansion-panel #functionPanel *ngFor="let function of bodyFunctions">
+                    <mat-expansion-panel-header *ngIf="!functionPanel.expanded">
+                        <mat-panel-title *ngIf="!functionPanel.expanded">
+                            {{ function.code }}
+                        </mat-panel-title>
+                        <mat-panel-description *ngIf="!functionPanel.expanded">
+                            {{ function.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <p>{{ function.code }} - <span class="inner-title">{{ function.title }}</span></p>
+
+
+                    <mat-divider></mat-divider>
+
+                    <p class="bold-font">{{ function.description }}</p>
+                    <p *ngIf="function.inclusion != null"><span class="bold-font">Inclusões: </span>{{ function.inclusion }}</p>
+                    <p *ngIf="function.exclusion != null"><span class="bold-font">Exclusões: </span>{{ function.exclusion }}</p>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="general-grade" fxLayoutAlign="end" formArrayName="generalGrade">
+                        <span class="bold-font grade grade-radio">Geral</span>
+                        <mat-radio-group [formControlName]="bodyFunctions.indexOf(function)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="0">0</mat-radio-button>
+                            <mat-radio-button color="warn" value="1">1</mat-radio-button>
+                            <mat-radio-button color="warn" value="2">2</mat-radio-button>
+                            <mat-radio-button color="warn" value="3">3</mat-radio-button>
+                            <mat-radio-button color="warn" value="4">4</mat-radio-button>
+                            <mat-radio-button color="warn" value="8">8</mat-radio-button>
+                            <mat-radio-button color="warn" value="9">9</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Geral
+                            </mat-label>
+                            <mat-select [formControlName]="bodyFunctions.indexOf(function)" class="grade-select">
+                                <mat-option value="0">0</mat-option>
+                                <mat-option value="1">1</mat-option>
+                                <mat-option value="2">2</mat-option>
+                                <mat-option value="3">3</mat-option>
+                                <mat-option value="4">4</mat-option>
+                                <mat-option value="8">8</mat-option>
+                                <mat-option value="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayoutAlign="start" class="general-grade" formArrayName="infoSource">
+                        <span class="bold-font grade grade-radio">Fonte da informação</span>
+                        <mat-radio-group [formControlName]="bodyFunctions.indexOf(function)" class="grade-radio" aria-label="Select an option">
+                            <mat-radio-button color="warn" value="Anamnese">Anamnese</mat-radio-button>
+                            <mat-radio-button color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-radio-button>
+                            <mat-radio-button color="warn" value="Exame clínico">Exame clínico</mat-radio-button>
+                            <mat-radio-button color="warn" value="Investigação técnica">Investigação técnica</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field class="grade-select">
+                            <mat-label>
+                                Fonte da informação
+                            </mat-label>
+                            <mat-select [formControlName]="bodyFunctions.indexOf(function)" class="grade-select">
+                                <mat-option color="warn" value="Anamnese">Anamnese</mat-option>
+                                <mat-option color="warn" value="Questionário relatado pelo paciente">Questionário relatado pelo paciente</mat-option>
+                                <mat-option color="warn" value="Exame clínico">Exame clínico</mat-option>
+                                <mat-option color="warn" value="Investigação técnica">Investigação técnica</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="textarea" appearance="fill" formArrayName="problemDescription">
+                        <mat-label>Descrição do Problema (Opcional)</mat-label>
+                        <textarea matInput cols="100000" [formControlName]="bodyFunctions.indexOf(function)" placeholder="Descrição do Problema"></textarea>
+                    </mat-form-field>
+
+                </mat-expansion-panel>
+            </mat-accordion>
+            <span #invalid fxLayoutAlign="center" *ngIf="invalids.length > 0" class="invalid">*As questões: {{invalids}} devem ser respondidas</span>
+            <div class="nextStep">
+                <button mat-button mat-button matStepperPrevious mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    Anterior
+                </button>
+                <span class="spacer"></span>
+                <button mat-button mat-stroked-button [matTooltip]="invalids" (click)="validateForm(bfFormGroup,bodyFunctions)" matTooltipPosition="before" *ngIf="!bfFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+                <button mat-button matStepperNext mat-stroked-button (click)="addAnswers(bfFormGroup)" *ngIf="bfFormGroup.valid" color="warn" class="btn-block btn-next">
+                    Próximo
+                </button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Revisão</ng-template>
+        <div>
+            <button mat-button mat-stroked-button matStepperPrevious color="warn">Voltar</button>
+            <button mat-button mat-stroked-button (click)="newEvaluation()" color="warn">Salvar Avaliação</button>
+            <button mat-button mat-stroked-button (click)="download()" color="warn">Baixar Avaliação</button>
+        </div>
+        <div id="print" #print>
+            <h1 class="header-title display-5">Avaliação Funcional</h1>
+            <hr>
+            <div class="first-header">
+                <p><span class="bold-font">Paciente: </span>{{ evaluation.patientId }}</p>
+                <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistId }}</p>
+                <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
+                <p><span class="bold-font">Data: </span>{{ evaluation.date }}</p>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepTwo}}">{{stepTwo}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, environmentalFactors)!=null">{{ getQuestionCode(answer, environmentalFactors) }} - {{ getQuestionTitle(answer, environmentalFactors) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, environmentalFactors)!=null">
+                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepThree}}">{{stepThree}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">{{ getQuestionCode(answer, activityAndParticipation) }} - {{ getQuestionTitle(answer, activityAndParticipation) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">
+                    <span class="bold-font">C: </span>{{ answer.cGrade }}
+                <span class="bold-font">P: </span>{{ answer.pGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepFour}}">{{stepFour}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, bodyStructures)!=null">{{ getQuestionCode(answer, bodyStructures) }} - {{ getQuestionTitle(answer, bodyStructures) }}</span>
+                <br>
+                <span class="text-right" *ngIf="getQuestionCode(answer, bodyStructures)!=null">
+                    <span class="bold-font">Localização: </span>{{ answer.locationGrade }}
+                <span class="bold-font">Natureza: </span>{{ answer.natureGrade }}
+                <span class="bold-font">Extensão: </span>{{ answer.extensionGrade }}
+                </span>
+            </div>
+            <hr>
+            <h4 matTooltip="{{stepFive}}">{{stepFive}}</h4>
+            <div *ngFor="let answer of evaluation.answers">
+                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">{{ getQuestionCode(answer, bodyFunctions) }} - {{ getQuestionTitle(answer, bodyFunctions) }}</span>
+                <br>
+                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">
+                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
+                </span>
+            </div>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>
