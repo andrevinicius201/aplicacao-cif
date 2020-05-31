@@ -163,6 +163,15 @@ textarea {
     height: 60px;
 }
 
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #E4022D;
+}
+
+.spinner {
+    margin-top: 30%;
+}
+
 @media(max-width: 768px) {
      ::ng-deep .mat-step-label {
         display: none !important;
@@ -174,7 +183,7 @@ textarea {
         margin-right: 0;
     }
     .login-wrapper .mat-stroked-button {
-        width: 225px;
+        width: 100%;
         margin-bottom: 5%;
     }
     .btn-clean {

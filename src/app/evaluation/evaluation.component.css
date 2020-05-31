@@ -6,6 +6,13 @@ h3 {
     display: none;
 }
 
+.mat-stroked-button {
+    border: 1px solid currentColor;
+    line-height: 35px;
+    background: #FFF7FA;
+    width: 140px;
+}
+
 ::ng-deep .mat-accordion {
     flex-direction: column !important;
 }
@@ -128,6 +135,10 @@ h3 {
 }
 
 @media(max-width: 768px) {
+    .mat-stroked-button {
+        width: 100%;
+        margin-bottom: 5%;
+    }
     .grade-radio {
         display: none;
     }

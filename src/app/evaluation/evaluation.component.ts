@@ -133,7 +133,8 @@ export class EvaluationComponent implements OnInit {
   }
 
   download(){
-    return xepOnline.Formatter.Format('print', {renderer:'download()'});
+    var file = "Avaliação Funcional - " + this.evaluation.patientId;
+    return xepOnline.Formatter.Format('print', {render:'download', filename: file});
   }
 
   newEvaluation(){
@@ -154,40 +155,6 @@ export class EvaluationComponent implements OnInit {
     )
   }
 
-  showFirstForm() {
-    // let doc = new jspdf();
-
-    // let specialElementHandlers = {
-    //   '#editor': function(element, renderer) {
-    //     return true;
-    //   }
-    // };
-
-    // let content = this.print.nativeElement;
-    // doc.fromHTML(content, 15,15, {
-    //   'width':190,
-    //   'elementHandlers':specialElementHandlers
-    // });
-
-    // doc.save('test.pdf');
-    // var data = document.getElementById('print');
-
-    // let pdf = new jspdf();
-    // html2canvas(data).then(canvas => {
-    //   var imgWidth = 190;
-    //   var pageHeight = 295;
-    //   var imgHeight = canvas.height * imgWidth / canvas.width;
-    //   var heightLeft = imgHeight;
-    //   const contentDataURL = canvas.toDataURL('image/png')
-    //   pdf.save('MYPdf.pdf');
-    //   pdf.addImage(contentDataURL, 'PNG', 0,0,imgWidth,imgHeight)
-    // });
-  }
-
-  showSecondForm() {
-    console.log("2ND FORM: ", this.efFormGroup);
-  }
-
   addIEtoBounderObject() {
     this.evaluation = this.ieFormGroup.value;
     this.evaluation.therapistId = localStorage.getItem('name');
@@ -196,16 +163,17 @@ export class EvaluationComponent implements OnInit {
     console.log(this.evaluation)
   }
 
-  finishEvaluation() {
-    this.addAnswers(this.efFormGroup);
-    this.addAnswers(this.apFormGroup);
-    this.addAnswers(this.bfFormGroup);
-    this.addAnswers(this.bsFormGroup);
-  }
-
   getQuestionCode(answer:Answer, array:any[]){
     var item = array.find(i => i.id == answer.questionId);
     return item != undefined ? item.code : null;
+  }
+
+  getAnswerGrade(question:Question){
+    var array = this.evaluation.answers;
+    if(array != undefined){
+      var answer =  array.find(i => i.questionId == question.id);
+      return answer;
+    }
   }
 
   getQuestionTitle(answer:Answer, array:any[]){

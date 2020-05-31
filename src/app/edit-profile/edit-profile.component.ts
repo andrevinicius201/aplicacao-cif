@@ -10,6 +10,7 @@ import { AuthService } from '../service/auth.service';
 import { EditProfileService } from '../service/edit-profile.service';
 import { RemoveAccountService } from '../service/remove-account.service';
 import { Router } from '@angular/router';
+import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class EditProfileComponent implements OnInit {
   addressForm: FormGroup;
   cepNotFound = false;
   equalPass = true;
+  loaded = false;
   loading = false;
   patient = null;
   states: any = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SE', 'SP', 'TO'];
@@ -46,7 +48,8 @@ export class EditProfileComponent implements OnInit {
     private _authservice:AuthService, 
     private session:SessionService,
     private router: Router,
-    private editProfileService: EditProfileService
+    private editProfileService: EditProfileService,
+    private openModalService:OpenModalService
     ) { 
     this.personForm = this.createPersonForm();
     this.addressForm = this.createAddressForm();
@@ -93,9 +96,10 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit(){
     this._authservice.getUserData(this.session.userId)
-          .subscribe(data => this.user = data);
-    
-
+          .subscribe(data => {
+            this.user = data;
+            this.loaded = true;
+          });
   }
 
   createPersonForm() {
@@ -114,31 +118,6 @@ export class EditProfileComponent implements OnInit {
         'note': new FormControl('')
       })
     });
-  }
-
-  deleteTherapist(id:String){
-    const data = {
-      text: 'Tem certeza que deseja excluir seu cadastro?',
-      title: 'Excluir cadastro',
-      buttonYes: 'Sim',
-      buttonNo: 'Não'
-    }
-    this.openModalService.openDialog(data).subscribe(res=>{
-      if(res){
-        this.removeAccount.removeAccount(id)
-          .subscribe(
-            (res: any) => {
-              location.reload();
-              this.snackbar.open('Cadastro removido', 'OK ', {
-                duration: 2000,
-              });
-              this.session.logoutUser();
-            }
-          );
-      }else{
-        console.log('Cadastro não excluído');
-      }
-    })
   }
 
   createAddressForm() {
@@ -166,7 +145,7 @@ export class EditProfileComponent implements OnInit {
             duration: 2000,
             panelClass: ['green-snackbar']
           });
-          location.reload();
+          this.router.navigate[''];
         },
         (erro: any) => {
           this.loading = false;
@@ -176,8 +155,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   cancelUpdate(){
-    console.log("refresh solicitado");
-    location.reload();
+    this.router.navigate[''];
   }
 
 }

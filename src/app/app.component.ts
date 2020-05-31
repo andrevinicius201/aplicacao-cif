@@ -91,12 +91,6 @@ export class AppComponent implements OnChanges {
     }
   }
 
-  openSideMenu(){
-    if(this.drawerElement != undefined){
-      this.drawerElement.open();
-    }
-  }
-
   islogged() {
     if (this.sessionService.getUserLogged() != null) {
       return true;

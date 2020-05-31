@@ -3,9 +3,9 @@
         <mat-toolbar color="warn">Menu</mat-toolbar>
         <mat-nav-list class="list-menu-side">
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToEvaluation()">
-                <mat-icon class="d-inline p-2 icon-side-menu">add_to_queue</mat-icon><span>Nova Avaliação</span></mat-button>
+                <mat-icon class="d-inline p-2 icon-side-menu">add_to_queue</mat-icon><span class="d-inline p-2">Nova Avaliação</span></mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">list_alt</mat-icon><span class="d-inline p-2">Avaliações Anteriores</span>
+                <mat-icon class="d-inline p-2 icon-side-menu">list_alt</mat-icon><span class="d-inline p-2">Avaliações Anteriores</span>
             </mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
                 <mat-icon class="d-inline p-2 icon-side-menu">person_add</mat-icon><span class="d-inline p-2">Cadastrar Paciente</span>
@@ -22,8 +22,10 @@
             <button type="button" aria-label="Toggle sidenav" (click)="openSideMenu()" mat-icon-button *ngIf="(isHandset$ | async) && isLogged">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <!-- <mat-icon (click)="goHome()" class="mack-white-icon" svgIcon="mack_white"></mat-icon> -->
-            <span class="app-name-header" (click)="goHome()"> Aplicação CIF</span>
+            <div>
+                <span class="app-name-header" (click)="goHome()"> Aplicação CIF</span>
+                <mat-icon (click)="goHome()" class="ml-2 align-top" svgIcon="mack_white"></mat-icon>
+            </div>
             <span class="spacer"></span>
             <span *ngIf="greetings != null && isLogged" class="greeting-span">{{ greetings }}</span>
             <button *ngIf="isLogged" mat-button class="menu-greeting" [matMenuTriggerFor]="menu"><mat-icon class="person-icon">person</mat-icon></button>
@@ -33,7 +35,7 @@
                 <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
             </mat-menu>
         </mat-toolbar>
-        <div *ngIf="pageTitle.length != 0">
+        <div *ngIf="pageTitle != undefined && pageTitle.length != 0">
             <ul class="breadcrumb">
                 <li><a href="/">Home</a></li>
                 <li>{{pageTitle | titlecase}}</li>

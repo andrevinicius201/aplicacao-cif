@@ -25,11 +25,11 @@
                 </mat-form-field>
 
                 <div class="nextStep">
-                    <button mat-button mat-button (click)="goBack2Home()" mat-stroked-button color="warn" class="btn-block btn-cancel">
+                    <button mat-button (click)="goBack2Home()" mat-stroked-button color="warn" class="float-left">
                         Cancelar
                     </button>
                     <span class="spacer"></span>
-                    <button mat-button matStepperNext [disabled]="!ieFormGroup.valid" mat-stroked-button (click)="showFirstForm();addIEtoBounderObject()" color="warn" class="btn-block btn-next">
+                    <button mat-button matStepperNext [disabled]="!ieFormGroup.valid" mat-stroked-button (click)="addIEtoBounderObject()" color="warn" class="float-right">
                         Próximo
                     </button>
                 </div>
@@ -572,10 +572,10 @@
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Revisão</ng-template>
-        <div>
-            <button mat-button mat-stroked-button matStepperPrevious color="warn">Voltar</button>
-            <button mat-button mat-stroked-button (click)="newEvaluation()" color="warn">Salvar Avaliação</button>
-            <button mat-button mat-stroked-button (click)="download()" color="warn">Baixar Avaliação</button>
+        <div class="mb-5">
+            <button mat-button mat-stroked-button matStepperPrevious color="warn" class="mx-auto">Voltar</button>
+            <button mat-button mat-stroked-button (click)="newEvaluation()" color="warn" class="mx-auto">Salvar</button>
+            <button mat-button mat-stroked-button (click)="download()" color="warn" class="mx-auto">Baixar</button>
         </div>
         <div id="print" #print>
             <h1 class="header-title display-5">Avaliação Funcional</h1>
@@ -588,42 +588,38 @@
             </div>
             <hr>
             <h4 matTooltip="{{stepTwo}}">{{stepTwo}}</h4>
-            <div *ngFor="let answer of evaluation.answers">
-                <span *ngIf="getQuestionCode(answer, environmentalFactors)!=null">{{ getQuestionCode(answer, environmentalFactors) }} - {{ getQuestionTitle(answer, environmentalFactors) }}</span>
-                <br>
-                <span class="text-right" *ngIf="getQuestionCode(answer, environmentalFactors)!=null">
-                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
-                </span>
+            <div *ngFor="let question of environmentalFactors">
+                <div class="border rounded mb-3" *ngIf=" getAnswerGrade(question) !=undefined ">
+                    <h5 class="p-2">{{ question.code }} - {{ question.title }}</h5>
+                    <p class="p-2">Geral: {{ getAnswerGrade(question).generalGrade }}</p>
+                </div>
             </div>
             <hr>
-            <h4 matTooltip="{{stepThree}}">{{stepThree}}</h4>
-            <div *ngFor="let answer of evaluation.answers">
-                <span *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">{{ getQuestionCode(answer, activityAndParticipation) }} - {{ getQuestionTitle(answer, activityAndParticipation) }}</span>
-                <br>
-                <span class="text-right" *ngIf="getQuestionCode(answer, activityAndParticipation)!=null">
-                    <span class="bold-font">C: </span>{{ answer.cGrade }}
-                <span class="bold-font">P: </span>{{ answer.pGrade }}
-                </span>
+            <h4 matTooltip="{{stepThree}} ">{{stepThree}}</h4>
+            <div *ngFor="let question of activityAndParticipation ">
+                <div class="border rounded mb-3" *ngIf=" getAnswerGrade(question) !=undefined ">
+                    <h5 class="p-2">{{ question.code }} - {{ question.title }}</h5>
+                    <p class="p-2">C: {{ getAnswerGrade(question).cGrade }}</p>
+                    <p class="p-2">P: {{ getAnswerGrade(question).pGrade }}</p>
+                </div>
             </div>
             <hr>
-            <h4 matTooltip="{{stepFour}}">{{stepFour}}</h4>
-            <div *ngFor="let answer of evaluation.answers">
-                <span *ngIf="getQuestionCode(answer, bodyStructures)!=null">{{ getQuestionCode(answer, bodyStructures) }} - {{ getQuestionTitle(answer, bodyStructures) }}</span>
-                <br>
-                <span class="text-right" *ngIf="getQuestionCode(answer, bodyStructures)!=null">
-                    <span class="bold-font">Localização: </span>{{ answer.locationGrade }}
-                <span class="bold-font">Natureza: </span>{{ answer.natureGrade }}
-                <span class="bold-font">Extensão: </span>{{ answer.extensionGrade }}
-                </span>
+            <h4 matTooltip="{{stepFour}} ">{{stepFour}}</h4>
+            <div *ngFor="let question of bodyStructures">
+                <div class="border rounded mb-3" *ngIf=" getAnswerGrade(question) !=undefined ">
+                    <h5 class="p-2">{{ question.code }} - {{ question.title }}</h5>
+                    <p class="p-2">Localização: {{ getAnswerGrade(question).locationGrade }}</p>
+                    <p class="p-2">Natureza: {{ getAnswerGrade(question).natureGrade }}</p>
+                    <p class="p-2">Extensão: {{ getAnswerGrade(question).extensionGrade }}</p>
+                </div>
             </div>
             <hr>
-            <h4 matTooltip="{{stepFive}}">{{stepFive}}</h4>
-            <div *ngFor="let answer of evaluation.answers">
-                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">{{ getQuestionCode(answer, bodyFunctions) }} - {{ getQuestionTitle(answer, bodyFunctions) }}</span>
-                <br>
-                <span *ngIf="getQuestionCode(answer, bodyFunctions)!=null">
-                    <span class="bold-font">Geral: </span>{{ answer.generalGrade }}
-                </span>
+            <h4 matTooltip="{{stepFive}} ">{{stepFive}}</h4>
+            <div *ngFor="let question of bodyFunctions">
+                <div class="border rounded mb-3" *ngIf=" getAnswerGrade(question) !=undefined ">
+                    <h5 class="p-2">{{ question.code }} - {{ question.title }}</h5>
+                    <p class="p-2">Geral: {{ getAnswerGrade(question).generalGrade }}</p>
+                </div>
             </div>
         </div>
     </mat-step>
