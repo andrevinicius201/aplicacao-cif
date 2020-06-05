@@ -1,6 +1,6 @@
 <div *ngIf="callRegisterComponent === false" class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="box">
-        <img mat-card-md-image src="../../assets/images/mackIcon/M_vermelho.png" class="logoMRed" alt="Logo isolado do Mackenzie">
+    <mat-card class="">
+        <img mat-card-md-image src="../../assets/images/mackIcon/M_vermelho.png" class="img-fluid mx-auto d-block" alt="Logo isolado do Mackenzie">
         <mat-card-header>
             <mat-card-title class="appNameTitle">Aplicação CIF</mat-card-title>
         </mat-card-header>
@@ -19,7 +19,7 @@
                 </mat-form-field>
             </mat-card-content>
 
-            <button *ngIf="!loading" [disabled]="!loginForm.form.valid" mat-stroked-button type="submit" color="warn" class="btn-block">Entrar</button>
+            <button *ngIf="!loading" [disabled]="!loginForm.form.valid" mat-stroked-button type="submit" color="primary" class="btn-block">Entrar</button>
             <mat-progress-spinner *ngIf="loading" class="example-margin" mode="indeterminate" color="warn"></mat-progress-spinner>
             <button *ngIf="!loading" mat-stroked-button color="warn" (click)="toRegister()" class="btn-block register">Registrar-se</button>
         </form>

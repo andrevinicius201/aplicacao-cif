@@ -131,6 +131,16 @@ mat-progress-spinner {
     left: 35%;
 }
 
+@media(max-width: 768px) {
+    .login-wrapper {
+        height: 90%;
+        padding-top: 10%;
+    }
+    .login-wrapper .mat-card {
+        padding: 0 50px 40px 50px;
+    }
+}
+
 @media(max-width: 480px) {
     .box {
         height: 90%;

@@ -3,17 +3,24 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Person } from '../interfaces/person';
 import { Address} from '../interfaces/address';
 import { CepService } from '../service/cep.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
 import { EditProfileService } from '../service/edit-profile.service';
+import { RemoveAccountService } from '../service/remove-account.service';
+import { Router } from '@angular/router';
+import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
 export class EditProfileComponent implements OnInit {
   user:Person;
@@ -21,6 +28,7 @@ export class EditProfileComponent implements OnInit {
   addressForm: FormGroup;
   cepNotFound = false;
   equalPass = true;
+  loaded = false;
   loading = false;
   patient = null;
   states: any = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SE', 'SP', 'TO'];
@@ -34,11 +42,14 @@ export class EditProfileComponent implements OnInit {
  
   
   constructor(
+    private removeAccount: RemoveAccountService,
     private cepService:CepService, 
     private snackbar:MatSnackBar, 
     private _authservice:AuthService, 
     private session:SessionService,
-    private editProfileService: EditProfileService
+    private router: Router,
+    private editProfileService: EditProfileService,
+    private openModalService:OpenModalService
     ) { 
     this.personForm = this.createPersonForm();
     this.addressForm = this.createAddressForm();
@@ -84,11 +95,11 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log("rota direcionada");
     this._authservice.getUserData(this.session.userId)
-          .subscribe(data => this.user = data);
-    
-
+          .subscribe(data => {
+            this.user = data;
+            this.loaded = true;
+          });
   }
 
   createPersonForm() {
@@ -100,7 +111,7 @@ export class EditProfileComponent implements OnInit {
       'lastName': new FormControl(this.person.lastName, [Validators.required]),
       'cpf': new FormControl(this.person.lastName, [Validators.required, Validators.pattern('[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}')]),
       'sex': new FormControl(this.person.sex, [Validators.required]),
-      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.maxLength(14)]),
       'birthDate': new FormControl(this.person.birthDate, [Validators.required]),
       'patient': new FormGroup({
         'therapistID': new FormControl(''),
@@ -127,7 +138,6 @@ export class EditProfileComponent implements OnInit {
     this.person.address = this.address;
     this.person.patient = this.patient;
     this.person.birthDate = new Date(this.person.birthDate).toISOString();
-    console.log(this.person);
     this.editProfileService.updateProfile(this.person)
       .subscribe(
         (res: any) => {
@@ -135,12 +145,17 @@ export class EditProfileComponent implements OnInit {
             duration: 2000,
             panelClass: ['green-snackbar']
           });
+          this.router.navigate[''];
         },
         (erro: any) => {
           this.loading = false;
           console.log(erro);
         }
       )
+  }
+
+  cancelUpdate(){
+    this.router.navigate[''];
   }
 
 }
