@@ -1,17 +1,21 @@
-<div class="form-group" fxLayout="row" fxLayoutAlign="end center">
-    <mat-form-field class="search-field" appearance="fill">
-        <mat-label>Buscar por nome do paciente</mat-label>
-        <mat-icon matSuffix>search</mat-icon>
-        <input matInput type="text" class="searchInput" [(ngModel)]="searchTerm" />
-    </mat-form-field>
+<div *ngIf="loading" class="spinner" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
 </div>
 
-<div class="patients-list" fxLayoutAlign="center center">
+<div *ngIf="!loading" class="patients-list">
+    <div class="form-group">
+        <mat-form-field class="search-field" appearance="fill">
+            <mat-label>Buscar Paciente</mat-label>
+            <mat-icon matSuffix>search</mat-icon>
+            <input matInput type="text" autocomplete="off" class="searchInput" [(ngModel)]="searchTerm" />
+        </mat-form-field>
+    </div>
+
     <mat-card class="user-card" *ngFor="let patient of patients | patientFilter:searchTerm">
         <mat-card-header>
             <div mat-card-avatar class="header-image"></div>
             <mat-card-title>{{ patient.firstName }}</mat-card-title>
-            <mat-card-subtitle>{{ patient.email }} | {{ patient.telephoneNumber }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ patient.email }} | {{ patient.cpf | mask: '000.000.000-00' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <p>
@@ -19,7 +23,8 @@
             </p>
         </mat-card-content>
         <mat-card-actions align="end">
-            <button mat-button> Nova avaliação </button>
+            <button mat-button (click)="deletePatient(patient.id)"> Excluir Paciente </button>
+            <button mat-button (click)="newEvaluation(patient)"> Nova avaliação </button>
             <button mat-button> Consultar histórico </button>
         </mat-card-actions>
     </mat-card>

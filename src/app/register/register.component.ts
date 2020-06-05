@@ -97,7 +97,7 @@ export class RegisterComponent implements OnInit {
       'lastName': new FormControl(this.person.lastName, [Validators.required]),
       'cpf': new FormControl(this.person.lastName, [Validators.required, Validators.pattern('[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}')]),
       'sex': new FormControl(this.person.sex, [Validators.required]),
-      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+      'telephoneNumber': new FormControl(this.person.telephoneNumber, [Validators.required, Validators.maxLength(14)]),
       'birthDate': new FormControl(this.person.birthDate),
     });
   }
@@ -114,7 +114,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('TO AQUI')
     if (this.sessionService.getUserLogged() != null) {
       return this.router.navigate(['home']);
     }
@@ -162,13 +161,12 @@ export class RegisterComponent implements OnInit {
   }
 
   private login(login: string, password: string) {
-    console.log('tentando fazer login');
     this.authService.login(login, password)
       .subscribe(
         resp => {
           this.loading = false;
-          this.sessionService.saveUserLoggedId(resp.id, resp.firstName)
-          console.log('successful login!');
+          this.sessionService.saveUserLoggedId(resp.id, resp.firstName, )
+          localStorage.setItem('role','THERAPIST')
           this.router.navigate(['home']);
         }, error => {
           this.loading = false;

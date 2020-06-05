@@ -1,4 +1,8 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="login-wrapper" fxLayout="row" *ngIf="loaded" fxLayoutAlign="center center">
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title> Meu perfil </mat-card-title>
@@ -8,7 +12,7 @@
                 <form [formGroup]="personForm">
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
-                        <input matInput placeholder="Nome" [ngModel]="user.firstName"  formControlName="firstName"> 
+                        <input matInput placeholder="Nome" [ngModel]="user.firstName" formControlName="firstName">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Sobrenome</mat-label>
@@ -17,7 +21,7 @@
 
                     <mat-form-field>
                         <mat-label>CPF</mat-label>
-                        <input matInput placeholder="CPF" #cpf formControlName="cpf" [ngModel]="user.cpf" required>
+                        <input mask="000.000.000-00" maxlength="14" matTooltip="CPF sem pontuação" matTooltipPosition="after" matInput placeholder="CPF" #cpf formControlName="cpf" [ngModel]="user.cpf" required>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Email</mat-label>
@@ -26,7 +30,7 @@
 
                     <mat-form-field>
                         <mat-label>Senha</mat-label>
-                        <input matInput placeholder="**********" type="password" formControlName="password" required>
+                        <input maxlength="8" matTooltip="Entre 6 e 8 caracteres" matTooltipPosition="after" matInput placeholder="**********" type="password" formControlName="password" required>
                         <div *ngIf="!equalPass">
                             <p class="cepNF">Senhas não correspondem!</p>
                             <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
@@ -34,7 +38,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Confirmar Senha</mat-label>
-                        <input matInput placeholder="Senha" (change)="validatePass()" placeholder="**********" type="password" formControlName="confirmPass" required>
+                        <input maxlength="8" matTooltip="Entre 6 e 8 caracteres" matTooltipPosition="after" matInput placeholder="Senha" (change)="validatePass()" placeholder="**********" type="password" formControlName="confirmPass" required>
                         <div *ngIf="!equalPass">
                             <p class="cepNF">Senhas não correspondem!</p>
                             <p class="cepNF">Minimo 6 Maximo 8 caracteres!</p>
@@ -43,7 +47,7 @@
 
                     <mat-form-field>
                         <mat-label>Celular</mat-label>
-                        <input matInput placeholder="Celular" formControlName="telephoneNumber" [ngModel]="user.telephoneNumber" required>
+                        <input mask="(00)00000-0000" maxlength="14" matTooltip="Com DDD" matTooltipPosition="after" matInput placeholder="Celular" formControlName="telephoneNumber" [ngModel]="user.telephoneNumber" required>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Gênero</mat-label>
@@ -56,16 +60,15 @@
 
                     <mat-form-field>
                         <mat-label>Data de Nascimento</mat-label>
-                        <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" [ngModel]="user.birthDate"  required formControlName="birthDate">
+                        <input matInput [matDatepicker]="picker" readonly (click)="picker.open()" [ngModel]="user.birthDate" required formControlName="birthDate">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="nextStep">
-                        <span class="spacer"></span>
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
-                            <mat-icon>double_arrow</mat-icon>
+                        <button *ngIf="!loading" mat-button (click)="cancelUpdate()" mat-stroked-button color="warn" class="float-left">
+                            Cancelar </button>
+                        <button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Próximo
-                            <mat-icon>double_arrow</mat-icon>
                         </button>
                     </div>
                 </form>
@@ -75,7 +78,7 @@
                     <ng-template matStepLabel>Dados Residenciais</ng-template>
                     <mat-form-field>
                         <mat-label>CEP</mat-label>
-                        <input matInput placeholder="CEP" (change)="searchCEP()" [ngModel]="user.address.postalCode" formControlName="postalCode" required>
+                        <input mask="00000-000" matInput placeholder="CEP" (change)="searchCEP()" [ngModel]="user.address.postalCode" formControlName="postalCode" required>
                         <div *ngIf="cepNotFound">
                             <p class="cepNF">CEP não encontrado!</p>
                         </div>
@@ -108,16 +111,15 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
-                            <mat-icon>clear_all</mat-icon>
-                            Limpar
-                            <mat-icon>clear_all</mat-icon>
+                        <button *ngIf="!loading" mat-button (click)="cancelUpdate()" mat-stroked-button color="warn" class="float-left">
+                            Cancelar
                         </button>
-                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
-                            <mat-icon>done_all</mat-icon>
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Concluir
-                            <mat-icon>done_all</mat-icon>
                         </button>
+                    </div>
+                    <div *ngIf="loading" class="spinner" fxLayoutAlign="center">
+                        <mat-spinner></mat-spinner>
                     </div>
                 </form>
             </mat-step>

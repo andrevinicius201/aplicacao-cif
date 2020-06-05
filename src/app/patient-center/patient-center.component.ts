@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./patient-center.component.css']
 })
 export class PatientCenterComponent implements OnInit {
-
+  
   constructor() { }
 
   ngOnInit(): void {

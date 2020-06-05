@@ -25,3 +25,12 @@ mat-form-field {
 .patients-list {
     flex-direction: column !important;
 }
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #E4022D;
+}
+
+.spinner {
+    margin-top: 30%;
+}

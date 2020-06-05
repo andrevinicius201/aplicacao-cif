@@ -29,7 +29,10 @@ import {
   MatMenuModule,
   MatProgressBarModule,
   MatCard,
-  MatCardModule
+  MatCardModule,
+  MatDialogModule,
+  MatTreeModule,
+  MatExpansionModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -44,6 +47,10 @@ import { PatientCenterComponent } from './patient-center/patient-center.componen
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
+import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { EvaluationComponent } from './evaluation/evaluation.component';
 
 @NgModule({
   declarations: [
@@ -55,9 +62,11 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     PatientCenterComponent,
     PatientListComponent,
     PatientFilterPipe,
-    EditProfileComponent
+    EditProfileComponent,
+    EvaluationComponent,
   ],
   imports: [
+    NgxMaskModule.forRoot(),
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -68,12 +77,14 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MatIconModule,
     MatSidenavModule,
     MatBadgeModule,
+    MatExpansionModule,
     MatListModule,
     MatGridListModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
+    MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
@@ -90,13 +101,16 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MatMenuModule,
     LayoutModule,
     MatProgressBarModule,
-    MatCardModule
+    MatCardModule,
+    MatTreeModule
   ],
   providers: [
     SessionService,
     MatDatepickerModule,
+    OpenModalService
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents:[ModalDialogComponent]
 })
 export class AppModule { }

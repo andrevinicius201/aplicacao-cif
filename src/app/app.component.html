@@ -1,37 +1,48 @@
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav [ngClass]="{'hidden-sidenav': !isLogged, 'sidenav': islogged}" #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-sidenav *ngIf="isLogged" #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false || openMenu">
         <mat-toolbar color="warn">Menu</mat-toolbar>
         <mat-nav-list class="list-menu-side">
+            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToEvaluation()">
+                <mat-icon class="d-inline p-2 icon-side-menu">add_to_queue</mat-icon><span class="d-inline p-2">Nova Avaliação</span></mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">add_to_queue</mat-icon><span>Nova Avaliação</span></mat-button>
-            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Avaliações Anteriores</span>
+                <mat-icon class="d-inline p-2 icon-side-menu">list_alt</mat-icon><span class="d-inline p-2">Avaliações Anteriores</span>
             </mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
-                <mat-icon class="icon-side-menu">person_add</mat-icon><span>Cadastrar Paciente</span>
+                <mat-icon class="d-inline p-2 icon-side-menu">person_add</mat-icon><span class="d-inline p-2">Cadastrar Paciente</span>
             </mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientList()">
-                <mat-icon class="icon-side-menu">people_alt</mat-icon><span>Pacientes Cadastrados</span></mat-button>
+                <mat-icon class="d-inline p-2 icon-side-menu">people_alt</mat-icon><span class="d-inline p-2">Pacientes Cadastrados</span></mat-button>
 
             <mat-button *ngIf="role == 'PATIENT'" class="btn-side-menu" mat-list-item>
-                <mat-icon class="icon-side-menu">list_alt</mat-icon><span>Minhas Avaliações</span></mat-button>
+                <mat-icon class="d-inline p-2 icon-side-menu">list_alt</mat-icon><span class="d-inline p-2">Minhas Avaliações</span></mat-button>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar class="header-toolbar" color="warn">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            <button type="button" aria-label="Toggle sidenav" (click)="openSideMenu()" mat-icon-button *ngIf="(isHandset$ | async) && isLogged">
+                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <span class="app-name-header" (click)="goHome()"> Aplicação CIF</span>
-            <mat-icon (click)="goHome()" class="mack-white-icon" svgIcon="mack_white"></mat-icon>
+            <div>
+                <span class="app-name-header" (click)="goHome()"> Aplicação CIF</span>
+                <mat-icon (click)="goHome()" class="ml-2 align-top" svgIcon="mack_white"></mat-icon>
+            </div>
             <span class="spacer"></span>
             <span *ngIf="greetings != null && isLogged" class="greeting-span">{{ greetings }}</span>
             <button *ngIf="isLogged" mat-button class="menu-greeting" [matMenuTriggerFor]="menu"><mat-icon class="person-icon">person</mat-icon></button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="viewProfile()"><mat-icon>person_outline</mat-icon> Perfil</button>
+                <button mat-menu-item (click)="viewProfile()"><mat-icon>person_outline</mat-icon> Editar perfil </button>
+                <button mat-menu-item (click)="deleteTherapist()"><mat-icon>delete_forever</mat-icon> Excluir perfil </button>
                 <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
             </mat-menu>
         </mat-toolbar>
+        <div *ngIf="pageTitle != undefined && pageTitle.length != 0">
+            <ul class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li>{{pageTitle | titlecase}}</li>
+            </ul>
+        </div>
+
+
         <router-outlet (activate)="onActivate($event)"></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

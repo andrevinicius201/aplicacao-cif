@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../service/session.service';
 import { Router } from '@angular/router';
 import { PatientListService } from '../service/patient-list.service';
-import {MatCardModule} from '@angular/material/card';
+import { MatSnackBar } from '@angular/material';
+import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
+import { RemoveAccountService } from '../service/remove-account.service';
+import {Title} from "@angular/platform-browser";
+import { Patient } from '../interfaces/patient';
+import { Person } from '../interfaces/person';
 
 @Component({
   selector: 'app-patient-list',
@@ -12,21 +17,61 @@ import {MatCardModule} from '@angular/material/card';
 export class PatientListComponent implements OnInit {
   searchTerm: string;
   public patients = [];
+  title:String = "Listagem de paciente";
+  loading: boolean;
+  constructor(
+    private openModalService: OpenModalService,
+    private session: SessionService,
+    private router: Router,
+    private _patientlist: PatientListService,
+    private removeAccount: RemoveAccountService,
+    private snackbar: MatSnackBar
+  ) { }
 
-  constructor(private session:SessionService, private router:Router, private _patientlist:PatientListService){}
-
-  ngOnInit(){
-    console.log(this.session.getUserLogged());
-    if(this.session.getUserLogged() == null){
+  ngOnInit() {
+    if (this.session.getUserLogged() == null) {
       this.router.navigate(['']);
     }
-    
-    if(localStorage.getItem('role') == 'PATIENT'){
+
+    if (localStorage.getItem('role') == 'PATIENT') {
       this.router.navigate(['evaluations']);
     }
-
+    this.loading = true;
     this._patientlist.getPatientList()
-        .subscribe(data => this.patients = data);
+      .subscribe(
+        data => {
+          this.loading = false;
+          this.patients = data
+        }
+      );
+  }
+
+  deletePatient(id: String) {
+    const data = {
+      text: 'Tem certeza que deseja excluir o paciente?',
+      title: 'Excluir paciente',
+      buttonYes: 'Sim',
+      buttonNo: 'Não'
+    }
+    this.openModalService.openDialog(data).subscribe(res => {
+      if (res) {
+        this.removeAccount.removeAccount(id)
+          .subscribe(
+            () => {
+              location.reload();
+              this.snackbar.open('Cadastro removido', 'OK ', {
+                duration: 2000,
+              });
+            }
+          );
+      } else {
+        console.log('Paciente não excluido');
+      }
+    })
+  }
+
+  newEvaluation(patient: Person) {
+    this.router.navigate(['evaluation'], { state: { patient: patient } })
   }
 
 }
