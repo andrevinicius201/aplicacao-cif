@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   personBaseUrl: 'https://java-cif-person-api.herokuapp.com',
-  cepBaseUrl: 'https://viacep.com.br'
+  questionBaseUrl: 'https://java-cif-question-api.herokuapp.com',
+  cepBaseUrl: 'https://viacep.com.br',
+  evaluationBaseUrl: 'https://java-cif-evaluation-api.herokuapp.com'
 };
 
 /*

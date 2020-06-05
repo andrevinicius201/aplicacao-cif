@@ -1,6 +1,20 @@
 .accept {
-  margin-left: 23%;
+    margin-left: 23%;
 }
+
 .cancel {
-  margin-left: 5%;
+    margin-left: 5%;
+}
+
+.text {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.btn-no {
+    border: 1px solid currentColor !important;
+    line-height: 35px !important;
+    background: #FFF7FA !important;
+    width: 80px !important;
+    color: #f44336 !important;
+    border-radius: 8px;
 }

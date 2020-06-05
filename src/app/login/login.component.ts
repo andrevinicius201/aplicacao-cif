@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
         res => {
           this.loading = false;
           this.sessionService.saveUserLoggedId(res.id, res.firstName);
-          console.log('successful login!');
           this.personOut.emit(this.person);
           if(res.patient != null){
             localStorage.setItem('role','PATIENT')
@@ -45,7 +44,6 @@ export class LoginComponent implements OnInit {
           }
         }, error => {
           this.loading = false;
-          console.log(error);
           this.snackbar.open('Login ou Senha incorreto!', 'Dismiss', {
             duration: 2000,
             panelClass: ['error-snackbar']

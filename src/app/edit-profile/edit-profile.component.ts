@@ -8,9 +8,9 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/format-datepicker';
 import { SessionService } from '../service/session.service';
 import { AuthService } from '../service/auth.service';
 import { EditProfileService } from '../service/edit-profile.service';
-import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 import { RemoveAccountService } from '../service/remove-account.service';
 import { Router } from '@angular/router';
+import { OpenModalService } from '../shared/modal-dialog/open-modal-service.service';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class EditProfileComponent implements OnInit {
   addressForm: FormGroup;
   cepNotFound = false;
   equalPass = true;
+  loaded = false;
   loading = false;
   patient = null;
   states: any = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SE', 'SP', 'TO'];
@@ -41,14 +42,14 @@ export class EditProfileComponent implements OnInit {
  
   
   constructor(
-    private openModalService: OpenModalService,
     private removeAccount: RemoveAccountService,
     private cepService:CepService, 
     private snackbar:MatSnackBar, 
     private _authservice:AuthService, 
     private session:SessionService,
     private router: Router,
-    private editProfileService: EditProfileService
+    private editProfileService: EditProfileService,
+    private openModalService:OpenModalService
     ) { 
     this.personForm = this.createPersonForm();
     this.addressForm = this.createAddressForm();
@@ -94,11 +95,11 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(){
-    console.log("rota direcionada");
     this._authservice.getUserData(this.session.userId)
-          .subscribe(data => this.user = data);
-    
-
+          .subscribe(data => {
+            this.user = data;
+            this.loaded = true;
+          });
   }
 
   createPersonForm() {
@@ -119,32 +120,6 @@ export class EditProfileComponent implements OnInit {
     });
   }
 
-  deleteTherapist(id:String){
-    const data = {
-      text: 'Tem certeza que deseja excluir seu cadastro?',
-      title: 'Excluir cadastro',
-      buttonYes: 'Sim',
-      buttonNo: 'Não'
-    }
-    this.openModalService.openDialog(data).subscribe(res=>{
-      if(res){
-        console.log("exclusao solicitada")
-        this.removeAccount.removeAccount(id)
-          .subscribe(
-            (res: any) => {
-              location.reload();
-              this.snackbar.open('Cadastro removido', 'OK ', {
-                duration: 2000,
-              });
-              this.session.logoutUser();
-            }
-          );
-      }else{
-        console.log('Cadastro não excluído');
-      }
-    })
-  }
-
   createAddressForm() {
     return new FormGroup({
       'publicPlace': new FormControl(this.address.publicPlace, [Validators.required]),
@@ -163,7 +138,6 @@ export class EditProfileComponent implements OnInit {
     this.person.address = this.address;
     this.person.patient = this.patient;
     this.person.birthDate = new Date(this.person.birthDate).toISOString();
-    console.log(this.person);
     this.editProfileService.updateProfile(this.person)
       .subscribe(
         (res: any) => {
@@ -171,12 +145,17 @@ export class EditProfileComponent implements OnInit {
             duration: 2000,
             panelClass: ['green-snackbar']
           });
+          this.router.navigate[''];
         },
         (erro: any) => {
           this.loading = false;
           console.log(erro);
         }
       )
+  }
+
+  cancelUpdate(){
+    this.router.navigate[''];
   }
 
 }

@@ -1,0 +1,180 @@
+.expansion-panel {
+    margin-bottom: 10px;
+}
+
+h3 {
+    display: none;
+}
+
+.mat-stroked-button {
+    border: 1px solid currentColor;
+    line-height: 35px;
+    background: #FFF7FA;
+    width: 140px;
+}
+
+::ng-deep .mat-accordion {
+    flex-direction: column !important;
+}
+
+::ng-deep .mat-step-header .mat-step-icon {
+    background-color: #E4022D;
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #E4022D;
+}
+
+.btn-next {
+    float: right !important;
+}
+
+.btn-block {
+    border-color: #f44336;
+}
+
+.spinner {
+    margin-top: 30%;
+}
+
+.scrollable-content {
+    max-height: 300px;
+    overflow: auto;
+    margin-top: 5px;
+}
+
+.mat-expansion-panel {
+    margin-bottom: 20px;
+}
+
+.mat-expansion-panel-header-title {
+    max-width: 40px;
+    width: -webkit-fill-available;
+}
+
+.mat-expansion-panel-header-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.inner-title {
+    color: #707070;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+.mat-card {
+    display: grid;
+}
+
+.general-grade {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.textarea {
+    width: 100%;
+}
+
+.bold-font {
+    font-weight: bold;
+    color: #979797;
+}
+
+.grade {
+    font-size: medium;
+}
+
+.grade-select {
+    display: none;
+    text-align: center;
+}
+
+.session-description {
+    margin-bottom: 20px;
+}
+
+.mat-radio-button {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.invisible {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+}
+
+.invalid {
+    color: #E4022D;
+    margin: 20px 0 20px 0;
+}
+
+.header-title {
+    text-align: center;
+}
+
+.text-left {
+    float: left;
+}
+
+.text-right {
+    float: right;
+}
+
+.space {
+    display: flex;
+}
+
+.first-header {
+    margin-bottom: 40px;
+}
+
+@media(max-width: 768px) {
+    .mat-stroked-button {
+        width: 100%;
+        margin-bottom: 5%;
+    }
+    .grade-radio {
+        display: none;
+    }
+    .grade-select {
+        text-align: start;
+        width: 100%;
+        display: block;
+    }
+    .panel-description {
+        display: none;
+    }
+    .expansion-panel {
+        margin-bottom: 0;
+    }
+     ::ng-deep .mat-step-label {
+        display: none !important;
+    }
+    .space {
+        margin-bottom: 10px;
+    }
+    .first-header {
+        margin-bottom: 0;
+    }
+    h3 {
+        display: block;
+        text-align: center;
+        color: #979797;
+    }
+    .btn-block {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .invalid {
+        margin-bottom: 20px;
+    }
+    .textarea {
+        height: 100;
+    }
+}

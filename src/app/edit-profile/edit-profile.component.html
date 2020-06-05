@@ -1,4 +1,8 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="login-wrapper" fxLayout="row" *ngIf="loaded" fxLayoutAlign="center center">
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title> Meu perfil </mat-card-title>
@@ -6,7 +10,6 @@
         <mat-horizontal-stepper linear="true" #stepper>
             <mat-step [stepControl]="personForm">
                 <form [formGroup]="personForm">
-                    <button mat-button color="primary" (click)="deleteTherapist(user.id)">Excluir cadastro</button>
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
                     <mat-form-field>
                         <input matInput placeholder="Nome" [ngModel]="user.firstName" formControlName="firstName">
@@ -62,8 +65,9 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                     <div class="nextStep">
-                        <span class="spacer"></span>
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                        <button *ngIf="!loading" mat-button (click)="cancelUpdate()" mat-stroked-button color="warn" class="float-left">
+                            Cancelar </button>
+                        <button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Próximo
                         </button>
                     </div>
@@ -107,12 +111,15 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button *ngIf="!loading" mat-button (click)="stepper.previous()" mat-stroked-button color="warn" class="btn-block">
-                            Limpar
+                        <button *ngIf="!loading" mat-button (click)="cancelUpdate()" mat-stroked-button color="warn" class="float-left">
+                            Cancelar
                         </button>
-                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Concluir
                         </button>
+                    </div>
+                    <div *ngIf="loading" class="spinner" fxLayoutAlign="center">
+                        <mat-spinner></mat-spinner>
                     </div>
                 </form>
             </mat-step>

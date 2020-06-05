@@ -30,7 +30,9 @@ import {
   MatProgressBarModule,
   MatCard,
   MatCardModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTreeModule,
+  MatExpansionModule
 } from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -47,7 +49,8 @@ import { PatientFilterPipe } from './patient-list/patient-filter.pipe';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { OpenModalService } from './shared/modal-dialog/open-modal-service.service';
 import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { EvaluationComponent } from './evaluation/evaluation.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,8 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     PatientCenterComponent,
     PatientListComponent,
     PatientFilterPipe,
-    EditProfileComponent
+    EditProfileComponent,
+    EvaluationComponent,
   ],
   imports: [
     NgxMaskModule.forRoot(),
@@ -73,6 +77,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     MatIconModule,
     MatSidenavModule,
     MatBadgeModule,
+    MatExpansionModule,
     MatListModule,
     MatGridListModule,
     MatFormFieldModule,
@@ -97,6 +102,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     LayoutModule,
     MatProgressBarModule,
     MatCardModule,
+    MatTreeModule
   ],
   providers: [
     SessionService,

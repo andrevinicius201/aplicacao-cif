@@ -1,14 +1,10 @@
-<div>
-    <p>Home > Cadastro de Paciente</p>
-</div>
-
 <div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title>Cadastro de Paciente</mat-card-title>
         </mat-card-header>
 
-        <mat-horizontal-stepper linear="true" #stepper>
+        <mat-horizontal-stepper linear="false" #stepper>
             <mat-step [stepControl]="personForm">
                 <form [formGroup]="personForm">
                     <ng-template matStepLabel>Dados Pessoais</ng-template>
@@ -70,12 +66,11 @@
                         <mat-label>Observações (Opcional)</mat-label>
                         <textarea matInput rows="10" formControlName="note" placeholder="Observações"></textarea>
                     </mat-form-field>
-                    <div class="nextStep">
-                        <button mat-button mat-button (click)="goBack2Login()" mat-stroked-button type="submit" color="warn" class="btn-block btn-cancel">
+                    <div class="nextStep ">
+                        <button mat-button (click)="goBack2Login()" mat-stroked-button type="submit" color="warn" class="float-left">
                             Cancelar
                         </button>
-                        <span class="spacer"></span>
-                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="btn-block">
+                        <button mat-button mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Próximo
                         </button>
                     </div>
@@ -119,10 +114,10 @@
                         </mat-select>
                     </mat-form-field>
                     <div class="nextStep">
-                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="btn-block">
+                        <button *ngIf="!loading" mat-button (click)="stepper.reset()" mat-stroked-button color="warn" class="float-left">
                             Limpar
                         </button>
-                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="primary" class="btn-block">
+                        <button *ngIf="!loading" mat-button matStepperNext mat-stroked-button type="submit" color="warn" class="float-right">
                             Concluir
                         </button>
                         <section *ngIf="loading" class="example-section">
