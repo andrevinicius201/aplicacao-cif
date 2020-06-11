@@ -5,24 +5,22 @@
         <p><span class="bold-font">Paciente: </span>{{ evaluation.patientName }}</p> 
         <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistName }}</p>
         <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
-        <p><span class="bold-font">Data: </span>{{ evaluation.date }}</p> 
+        <p><span class="bold-font">Data: </span>{{dateConversion(evaluation.date)}}</p> 
+        
     </div>
     <hr>
     <h4 matTooltip="Informações a respeito da avaliação"> </h4>
 
     <div *ngFor="let answer of evaluation.answers">
         <div class="border rounded mb-3">
-            <p>Código da questão</p>
-            <h5 class="p-2">{{ answer.questionId}} - {{answer.infoSource}}</h5>
-            <p class="p-2">Nota Geral: {{answer.generalGrade}} </p>
-            <p class="p-2" *ngIf="answer.locationGrade >= 0">Nota de localização: {{answer.locationGrade}} </p>
-            <p class="p-2" *ngIf="answer.extensionGrade >= 0">Nota de Extensão: {{answer.extensionGrade}} </p>
-            <p class="p-2" *ngIf="answer.natureGrade >= 0">Nota de natureza: {{answer.natureGrade}} </p>
-            <br>
-            <p class="p-2" *ngIf="answer.capacityGrade >= 0">Capacidade: {{answer.capacityGrade}} </p>
-            <p class="p-2" *ngIf="answer.performanceGrade >= 0">Performace: {{answer.performanceGrade}} </p>
-            <br>
-            <p class="p-2" *ngIf="answer.problemDescription != '' ">Detalhes: {{answer.problemDescription}} </p>
+            <h5>{{ answer.questionCode}} - {{ answer.questionDescription}}</h5>
+            <p>Nota Geral: {{answer.generalGrade}} </p>
+            <p *ngIf="answer.locationGrade != null">Nota de localização: {{answer.locationGrade}} </p>
+            <p *ngIf="answer.extensionGrade != null">Nota de Extensão: {{answer.extensionGrade}} </p>
+            <p *ngIf="answer.natureGrade != null">Nota de natureza: {{answer.natureGrade}} </p>
+            <p *ngIf="answer.capacityGrade != null">Capacidade: {{answer.capacityGrade}} </p>
+            <p *ngIf="answer.performanceGrade != null">Performace: {{answer.performanceGrade}} </p>
+            <p *ngIf="answer.problemDescription != null ">Detalhes: {{answer.problemDescription}} </p>
         </div>
     </div>
 
