@@ -51,6 +51,8 @@ import { OpenModalService } from './shared/modal-dialog/open-modal-service.servi
 import { ModalDialogComponent } from './shared/modal-dialog/modal-dialog.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { EvaluationComponent } from './evaluation/evaluation.component';
+import { EvaluationListComponent } from './evaluation-list/evaluation-list.component';
+import { EvaluationResultComponent } from './evaluation-result/evaluation-result.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
     PatientFilterPipe,
     EditProfileComponent,
     EvaluationComponent,
+    EvaluationListComponent,
+    EvaluationResultComponent,
   ],
   imports: [
     NgxMaskModule.forRoot(),

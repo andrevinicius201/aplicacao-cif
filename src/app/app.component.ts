@@ -20,7 +20,8 @@ import {Location} from '@angular/common';
 
 export class AppComponent implements OnChanges {
   title = 'aplicacao-cif-mackenzie';
-  pageTitle: string;
+  public pageTitle: string;
+  public pageTitlePT: string;
 
   public greetings: string;
   private hours: number;
@@ -46,6 +47,33 @@ export class AppComponent implements OnChanges {
     );
     route.events.subscribe(val => {
       this.pageTitle = window.location.pathname.replace("/","");
+      var title = window.location.pathname.replace("/","");
+      console.log(title);
+      if(title.indexOf("evaluation-details") !== -1){
+        this.pageTitlePT = "Detalhes da avaliação";
+      } else {
+        switch(title){
+          case("patientList"): 
+            return this.pageTitlePT = 'Pacientes';
+          case("editProfile"): 
+            return this.pageTitlePT = 'Editar Perfil';
+          case("patientRegister"): 
+            return this.pageTitlePT = 'Cadastro de Pacientes';
+          case("patientList"): 
+            return this.pageTitlePT = 'Listagem de pacientes';
+          case("evaluations"): 
+            return this.pageTitlePT = 'Avaliações';
+          case("evaluation"): 
+            return this.pageTitlePT = 'Nova Avaliação';
+          case("evaluation-list"): 
+            return this.pageTitlePT = 'Consulta avaliação';
+          case("register"): 
+            return this.pageTitlePT = 'Cadastro';
+          case("home"):
+            return this.pageTitlePT = '';
+        }
+      }
+      
     });
   }
 
@@ -68,20 +96,7 @@ export class AppComponent implements OnChanges {
     if (this.sessionService.getUserLogged() == null) {
       return this.route.navigate(['']);
     }
-    var title = window.location.pathname.replace("/","");
-    console.log(title);
-    switch(title){
-      case("patientList"): 
-        return this.pageTitle = 'Pacientes';
-      case("editProfile"): 
-        return this.pageTitle = 'Editar Perfil';
-      case("patientRegister"): 
-        return this.pageTitle = 'Cadastro De Pacientes';
-      case("evaluations"): 
-        return this.pageTitle = 'Avaliações';
-      case("home"):
-        return this.pageTitle = '';
-    }
+    
   }
 
 
@@ -136,6 +151,10 @@ export class AppComponent implements OnChanges {
 
   redirectToEvaluation() {
     this.route.navigate(['evaluation']);
+  }
+
+  redirectToEvaluationList() {
+    this.route.navigate(['evaluation-list']);
   }
 
   redirectToPatientList(){

@@ -1,0 +1,29 @@
+<div id="print" #print>
+    <h1 class="header-title display-5">Avaliação Funcional</h1>
+    <hr>
+    <div class="first-header">
+        <p><span class="bold-font">Paciente: </span>{{ evaluation.patientName }}</p> 
+        <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistName }}</p>
+        <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
+        <p><span class="bold-font">Data: </span>{{ evaluation.date }}</p> 
+    </div>
+    <hr>
+    <h4 matTooltip="Informações a respeito da avaliação"> </h4>
+
+    <div *ngFor="let answer of evaluation.answers">
+        <div class="border rounded mb-3">
+            <p>{{ getQuestion(answer).code }}</p>
+            <h5 class="p-2">{{ getQuestion(answer).title }} - {{answer.infoSource}}</h5>
+            <p class="p-2">Nota Geral: {{answer.generalGrade}} </p>
+            <p class="p-2" *ngIf="answer.locationGrade >= 0">Nota de localização: {{answer.locationGrade}} </p>
+            <p class="p-2" *ngIf="answer.extensionGrade >= 0">Nota de Extensão: {{answer.extensionGrade}} </p>
+            <p class="p-2" *ngIf="answer.natureGrade >= 0">Nota de natureza: {{answer.natureGrade}} </p>
+            <br>
+            <p class="p-2" *ngIf="answer.capacityGrade >= 0">Capacidade: {{answer.capacityGrade}} </p>
+            <p class="p-2" *ngIf="answer.performanceGrade >= 0">Performace: {{answer.performanceGrade}} </p>
+            <br>
+            <p class="p-2" *ngIf="answer.problemDescription != '' ">Detalhes: {{answer.problemDescription}} </p>
+        </div>
+    </div>
+
+</div>
