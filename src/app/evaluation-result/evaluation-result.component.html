@@ -12,8 +12,8 @@
 
     <div *ngFor="let answer of evaluation.answers">
         <div class="border rounded mb-3">
-            <p>{{ getQuestion(answer).code }}</p>
-            <h5 class="p-2">{{ getQuestion(answer).title }} - {{answer.infoSource}}</h5>
+            <p>Código da questão</p>
+            <h5 class="p-2">{{ answer.questionId}} - {{answer.infoSource}}</h5>
             <p class="p-2">Nota Geral: {{answer.generalGrade}} </p>
             <p class="p-2" *ngIf="answer.locationGrade >= 0">Nota de localização: {{answer.locationGrade}} </p>
             <p class="p-2" *ngIf="answer.extensionGrade >= 0">Nota de Extensão: {{answer.extensionGrade}} </p>
