@@ -4,7 +4,7 @@
         <mat-nav-list class="list-menu-side">
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToEvaluation()">
                 <mat-icon class="d-inline p-2 icon-side-menu">add_to_queue</mat-icon><span class="d-inline p-2">Nova Avaliação</span></mat-button>
-            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item>
+            <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToEvaluationList()">
                 <mat-icon class="d-inline p-2 icon-side-menu">list_alt</mat-icon><span class="d-inline p-2">Avaliações Anteriores</span>
             </mat-button>
             <mat-button *ngIf="role == 'THERAPIST'" class="btn-side-menu" mat-list-item (click)="redirectToPatientRegister()">
@@ -35,10 +35,10 @@
                 <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon> Sair</button>
             </mat-menu>
         </mat-toolbar>
-        <div *ngIf="pageTitle != undefined && pageTitle.length != 0">
+        <div *ngIf="pageTitle != undefined && pageTitle.length != 0 && isLogged">
             <ul class="breadcrumb">
                 <li><a href="/">Home</a></li>
-                <li>{{pageTitle | titlecase}}</li>
+                <li> {{pageTitlePT}} </li> 
             </ul>
         </div>
 
