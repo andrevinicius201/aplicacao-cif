@@ -18,6 +18,20 @@ declare var xepOnline: any;
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
+  public months: {[key: number]: string} = {
+    1: "Janeiro",
+    2: "Fevereiro",
+    3: "Março",
+    4: "Abril",
+    5: "Maio",
+    6: "Junho",
+    7: "Julho",
+    8: "Agosto",
+    9: "Setembro",
+    10:"Outubro",
+    11:"Novembro",
+    12:"Dezembro"
+  }
 
   stepOne = "Informações da Avaliação";
   stepTwo = "Fatores Ambientais";
@@ -47,6 +61,7 @@ export class EvaluationComponent implements OnInit {
   @Input() evaluation: Evaluation = <Evaluation>{};
   @Input() answer: Answer = <Answer>{};
 
+  private answers: Answer[] = [];
 
   @ViewChild("factorPanel") factorPanel: MatExpansionPanel;
   @ViewChild("aNpPanel") aNpPanel: MatExpansionPanel;
@@ -105,6 +120,15 @@ export class EvaluationComponent implements OnInit {
     this.listPatients();
   }
 
+  dateConversion(date:string){
+    let str = date; 
+    let splitted = str.split("-", 3); 
+    let day = splitted[2].substring(0,2);
+    let month = splitted[1];
+    let year = splitted[0];
+    return day + " de " + this.months[parseInt(month)] + " de " + year;
+  } 
+  
   setQuestionsIdAndValidations(fg: FormGroup, list: any[]) {
     for (let index = 0; index < list.length; index++) {
       fg.controls.questionId.get([index]).setValue(list[index].id);
@@ -113,9 +137,9 @@ export class EvaluationComponent implements OnInit {
         console.log("generalGrade setado")
         fg.controls.generalGrade.get([index]).setValidators(Validators.required);
       }
-      else if (fg.controls.cGrade != undefined) {
-        fg.controls.cGrade.get([index]).setValidators(Validators.required);
-        fg.controls.pGrade.get([index]).setValidators(Validators.required);
+      else if (fg.controls.capacityGrade != undefined) {
+        fg.controls.capacityGrade.get([index]).setValidators(Validators.required);
+        fg.controls.performanceGrade.get([index]).setValidators(Validators.required);
       }
       else {
         fg.controls.locationGrade.get([index]).setValidators(Validators.required);
@@ -150,7 +174,7 @@ export class EvaluationComponent implements OnInit {
 
   addIEtoBounderObject() {
     this.evaluation = this.ieFormGroup.value;
-    this.evaluation.therapistId = localStorage.getItem('name');
+    this.evaluation.therapistId = localStorage.getItem("user");
     this.evaluation.date = new Date().toISOString();
     this.evaluation.answers = [];
     console.log(this.evaluation)
@@ -187,13 +211,13 @@ export class EvaluationComponent implements OnInit {
           ? null
           : fg.get('generalGrade').value[i],
 
-        pGrade: fg.get('pGrade') == undefined || null
+        performanceGrade: fg.get('performanceGrade') == undefined || null
           ? null
-          : fg.get('pGrade').value[i],
+          : fg.get('performanceGrade').value[i],
 
-        cGrade: fg.get('cGrade') == undefined || null
+        capacityGrade: fg.get('capacityGrade') == undefined || null
           ? null
-          : fg.get('cGrade').value[i],
+          : fg.get('capacityGrade').value[i],
 
         natureGrade: fg.get('natureGrade') == undefined || null
           ? null
@@ -262,8 +286,8 @@ export class EvaluationComponent implements OnInit {
       questionId: this.buildQuestionsId(data == null ? null : data.activityAndParticipation),
       infoSource: this.buildInfoSource(data == null ? null : data.activityAndParticipation),
       problemDescription: this.buildProblemDescription(data == null ? null : data.activityAndParticipation),
-      cGrade: this.buildGrade(data == null ? null : data.activityAndParticipation),
-      pGrade: this.buildGrade(data == null ? null : data.activityAndParticipation),
+      capacityGrade: this.buildGrade(data == null ? null : data.activityAndParticipation),
+      performanceGrade: this.buildGrade(data == null ? null : data.activityAndParticipation),
     });
   }
 

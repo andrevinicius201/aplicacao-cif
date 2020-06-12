@@ -9,6 +9,8 @@ import { PatientListComponent } from './patient-list/patient-list.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { EvaluationListComponent } from './evaluation-list/evaluation-list.component';
+import { EvaluationResultComponent } from './evaluation-result/evaluation-result.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent},
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent},
   { path: 'evaluation', component: EvaluationComponent},
   { path: 'forgotPassword', component: ForgotPasswordComponent},
+  { path: 'evaluation-list', component: EvaluationListComponent},
+  { path: 'evaluation-details/:id', component: EvaluationResultComponent}
 ];
 
 @NgModule({
