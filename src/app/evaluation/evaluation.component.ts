@@ -61,7 +61,6 @@ export class EvaluationComponent implements OnInit {
   @Input() evaluation: Evaluation = <Evaluation>{};
   @Input() answer: Answer = <Answer>{};
 
-  private answers: Answer[] = [];
 
   @ViewChild("factorPanel") factorPanel: MatExpansionPanel;
   @ViewChild("aNpPanel") aNpPanel: MatExpansionPanel;
@@ -202,6 +201,9 @@ export class EvaluationComponent implements OnInit {
     this.invalids = [];
     const list = fg.get('questionId').value;
     for (let i = 0; i < list.length; i++) {
+      if(this.evaluation.answers.find(a => a.questionId == list[i]) != null){
+       break; 
+      }
       let answer: Answer = {
         questionId: fg.get('questionId').value[i],
         infoSource: fg.get('infoSource').value[i],
