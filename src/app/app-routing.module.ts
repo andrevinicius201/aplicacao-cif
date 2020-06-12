@@ -8,6 +8,7 @@ import { PatientCenterComponent } from './patient-center/patient-center.componen
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { EvaluationComponent } from './evaluation/evaluation.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'patientList', component: PatientListComponent},
   { path: 'editProfile', component: EditProfileComponent},
   { path: 'evaluation', component: EvaluationComponent},
+  { path: 'forgotPassword', component: ForgotPasswordComponent},
 ];
 
 @NgModule({
