@@ -1,20 +1,15 @@
 import { Component, OnInit, ViewChild, Input, Renderer2, ElementRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray, FormGroupDirective, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { QuestionService } from '../service/question.service';
 import { Question } from '../interfaces/question';
 import { Questions } from '../interfaces/questions';
 import { Observable } from 'rxjs';
-import { MatExpansionPanel, MatRadioGroup, throwToolbarMixedModesError, MatSnackBar } from '@angular/material';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-import { Patient } from '../interfaces/patient';
+import { MatExpansionPanel, MatSnackBar } from '@angular/material';
 import { Person } from '../interfaces/person';
 import { PatientListService } from '../service/patient-list.service';
 import { Evaluation } from '../interfaces/evaluation';
 import { Answer } from '../interfaces/answer';
-import { Gerador } from './gerador';
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
 import { EvaluationService } from '../service/evaluation.service';
 declare var xepOnline: any;
 @Component({
@@ -66,8 +61,6 @@ export class EvaluationComponent implements OnInit {
   @Input() evaluation: Evaluation = <Evaluation>{};
   @Input() answer: Answer = <Answer>{};
 
-  
-
   private answers: Answer[] = [];
 
   @ViewChild("factorPanel") factorPanel: MatExpansionPanel;
@@ -81,7 +74,6 @@ export class EvaluationComponent implements OnInit {
   questionList: Questions;
 
   constructor(
-    private renderer: Renderer2,
     private route: Router,
     private formBuilder: FormBuilder,
     private questionService: QuestionService,
@@ -164,14 +156,14 @@ export class EvaluationComponent implements OnInit {
 
   newEvaluation(){
     this.evaluationService.newEvaluation(this.evaluation).subscribe(
-      data =>{
+      () =>{
       this.snackbar.open('Avaliação salva com sucesso!', 'Accept', {
         duration: 2000,
         panelClass: ['green-snackbar']
       });
       this.route.navigate(['home']);
     },
-    err =>{
+    () =>{
       this.snackbar.open('Erro ao salvar avaliação!', 'Accept', {
         duration: 2000,
         panelClass: ['green-snackbar']
@@ -267,10 +259,6 @@ export class EvaluationComponent implements OnInit {
     });
   }
 
-  pdf() {
-    Gerador.geradorPDF(this.evaluation, this.questionList);
-  }
-
   validateForm(fc: FormGroup, array: any[]) {
     console.log(fc.get('infoSource'));
     if (this.invalids.length > 0) {
@@ -335,7 +323,7 @@ export class EvaluationComponent implements OnInit {
 
   buildInfoSource(questions: Question[]) {
     if (questions != null || questions != undefined) {
-      const values = questions.map((v: Question) => {
+      const values = questions.map(() => {
         new FormControl(this.answer.infoSource, [Validators.required])
       });
       return this.formBuilder.array(values, [Validators.required]);
@@ -345,7 +333,7 @@ export class EvaluationComponent implements OnInit {
 
   buildProblemDescription(questions: Question[]) {
     if (questions != null || questions != undefined) {
-      const values = questions.map((v: Question) => {
+      const values = questions.map(() => {
         new FormControl(this.answer.problemDescription)
       });
       return this.formBuilder.array(values);
@@ -355,7 +343,7 @@ export class EvaluationComponent implements OnInit {
 
   buildGrade(questions: Question[]) {
     if (questions != null || questions != undefined) {
-      const values = questions.map((v: Question) =>
+      const values = questions.map(() =>
         new FormControl(Validators.required)
       );
       return this.formBuilder.array(values, Validators.required);

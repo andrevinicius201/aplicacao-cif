@@ -30,6 +30,11 @@ export class AuthService {
     return this.http.get<Person>(url, httpOptions);
   }
 
+  forgotPassword(cpf:string) : Observable<any> {
+    const url = `${environment.personBaseUrl}/v1/person/forgotPassword/${cpf}`;
+    return this.http.get<any>(url);
+  }
+
   getUserData(login: string) : Observable<any> {
     const url = `${environment.personBaseUrl}/v1/person/findById/${this.session.userId}`;
     return this.http.get<Person>(url);
