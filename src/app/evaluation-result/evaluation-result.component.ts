@@ -4,7 +4,7 @@ import { Answer } from '../interfaces/answer';
 import { Question } from '../interfaces/question';
 import { Questions } from '../interfaces/questions';
 import { QuestionService } from '../service/question.service';
-
+declare var xepOnline: any;
 @Component({
   selector: 'app-evaluation-result',
   templateUrl: './evaluation-result.component.html',
@@ -13,6 +13,7 @@ import { QuestionService } from '../service/question.service';
 export class EvaluationResultComponent implements OnInit {
   private evaluationId:string = "";
   public evaluation:any;
+  loaded: boolean = false;
   public months: {[key: number]: string} = {
     1: "Janeiro",
     2: "Fevereiro",
@@ -36,8 +37,14 @@ export class EvaluationResultComponent implements OnInit {
     .subscribe(
       data => {
         this.evaluation = data;
+        this.loaded = true;
       }
     );  
+  }
+
+  download(){
+    var file = "Avaliação Funcional - " + this.evaluation.patientName;
+    return xepOnline.Formatter.Format('print', {render:'download', filename: file});
   }
 
   dateConversion(date:string){

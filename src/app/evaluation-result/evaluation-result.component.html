@@ -1,12 +1,20 @@
-<div id="print" #print>
+<div *ngIf="!loaded" class="spinner" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="loaded" class="mb-5">
+    <button mat-button mat-stroked-button routerLink="/" color="warn" class="mx-auto text-center">Voltar</button>
+    <button mat-button mat-stroked-button (click)="download()" color="warn" class="float-right mx-auto text-center">Baixar</button>
+</div>
+<div *ngIf="loaded" id="print" #print>
     <h1 class="header-title display-5">Avaliação Funcional</h1>
     <hr>
     <div class="first-header">
-        <p><span class="bold-font">Paciente: </span>{{ evaluation.patientName }}</p> 
+        <p><span class="bold-font">Paciente: </span>{{ evaluation.patientName }}</p>
         <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistName }}</p>
         <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
-        <p><span class="bold-font">Data: </span>{{dateConversion(evaluation.date)}}</p> 
-        
+        <p><span class="bold-font">Data: </span>{{dateConversion(evaluation.date)}}</p>
+
     </div>
     <hr>
     <h4 matTooltip="Informações a respeito da avaliação"> </h4>
@@ -14,14 +22,13 @@
     <div *ngFor="let answer of evaluation.answers">
         <div class="border rounded mb-3">
             <h5>{{ answer.questionCode}} - {{ answer.questionDescription}}</h5>
-            <p>Nota Geral: {{answer.generalGrade}} </p>
-            <p *ngIf="answer.locationGrade != null">Nota de localização: {{answer.locationGrade}} </p>
-            <p *ngIf="answer.extensionGrade != null">Nota de Extensão: {{answer.extensionGrade}} </p>
-            <p *ngIf="answer.natureGrade != null">Nota de natureza: {{answer.natureGrade}} </p>
-            <p *ngIf="answer.capacityGrade != null">Capacidade: {{answer.capacityGrade}} </p>
-            <p *ngIf="answer.performanceGrade != null">Performace: {{answer.performanceGrade}} </p>
-            <p *ngIf="answer.problemDescription != null ">Detalhes: {{answer.problemDescription}} </p>
+            <p class="p-2" *ngIf="answer.generalGrade != null">Nota Geral: {{answer.generalGrade}} </p>
+            <p class="p-2" *ngIf="answer.locationGrade != null">Nota de localização: {{answer.locationGrade}} </p>
+            <p class="p-2" *ngIf="answer.extensionGrade != null">Nota de Extensão: {{answer.extensionGrade}} </p>
+            <p class="p-2" *ngIf="answer.natureGrade != null">Nota de natureza: {{answer.natureGrade}} </p>
+            <p class="p-2" *ngIf="answer.capacityGrade != null">Capacidade: {{answer.capacityGrade}} </p>
+            <p class="p-2" *ngIf="answer.performanceGrade != null">Performace: {{answer.performanceGrade}} </p>
+            <p class="p-2" *ngIf="answer.problemDescription != null ">Detalhes: {{answer.problemDescription}} </p>
         </div>
     </div>
-
 </div>

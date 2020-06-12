@@ -31,12 +31,18 @@ export class EvaluationListComponent implements OnInit {
   
   constructor(private evaluationService:EvaluationService, private route:Router) { }
 
+  loaded: boolean = false;
+
+
   ngOnInit(): void {
     this.dateConversion("2020-05-31T20:15:37.217");
     this.evaluationService.evaluationList()
       .subscribe(
         data => {
-          this.dataSource = data
+          this.dataSource = data;
+          this.loaded = true;
+        }, error => {
+          this.loaded = true;
         }
       );
   }
