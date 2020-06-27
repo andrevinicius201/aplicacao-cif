@@ -4,13 +4,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
+import { SessionService } from './session.service';
+import { Answer } from '../interfaces/answer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private session:SessionService) { }
 
   newEvaluation(evaluation: Evaluation): Observable<Evaluation> {
     const url = `${environment.evaluationBaseUrl}/v1/evaluation/new`;
@@ -19,6 +21,17 @@ export class EvaluationService {
       catchError(this.handleError)
     );
   }
+
+  evaluationList(): Observable<Evaluation[]> {
+    const url = `${environment.evaluationBaseUrl}/v1/evaluation/therapistevaluations/${this.session.userId}`;
+    return this.http.get<Evaluation[]>(url);
+  }
+
+  getEvaluation(evaluation_id:string): Observable<Evaluation[]> {
+    const url = `${environment.evaluationBaseUrl}/v1/evaluation/${evaluation_id}`;
+    return this.http.get<Evaluation[]>(url);
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

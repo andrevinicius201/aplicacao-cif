@@ -14,7 +14,7 @@
                 <mat-form-field>
                     <mat-label>Paciente</mat-label>
                     <mat-select formControlName="patientId">
-                        <mat-option *ngFor="let patient of patients" [value]="patient.firstName">
+                        <mat-option *ngFor="let patient of patients" [value]="patient.id">
                             {{ patient.firstName }} - {{ patient.cpf | mask: '000.000.000-00' }}
                         </mat-option>
                     </mat-select>
@@ -584,7 +584,8 @@
                 <p><span class="bold-font">Paciente: </span>{{ evaluation.patientId }}</p>
                 <p><span class="bold-font">Terapeuta: </span>{{ evaluation.therapistId }}</p>
                 <p><span class="bold-font">Local: </span>{{ evaluation.location }}</p>
-                <p><span class="bold-font">Data: </span>{{ evaluation.date }}</p>
+                <p><span class="bold-font">Data: </span> {{ evaluation.date | date:"dd 'de' MMM 'de' yyyy"}} </p>
+                
             </div>
             <hr>
             <h4 matTooltip="{{stepTwo}}">{{stepTwo}}</h4>

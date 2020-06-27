@@ -18,6 +18,20 @@ declare var xepOnline: any;
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
+  public months: {[key: number]: string} = {
+    1: "Janeiro",
+    2: "Fevereiro",
+    3: "Março",
+    4: "Abril",
+    5: "Maio",
+    6: "Junho",
+    7: "Julho",
+    8: "Agosto",
+    9: "Setembro",
+    10:"Outubro",
+    11:"Novembro",
+    12:"Dezembro"
+  }
 
   stepOne = "Informações da Avaliação";
   stepTwo = "Fatores Ambientais";
@@ -105,6 +119,15 @@ export class EvaluationComponent implements OnInit {
     this.listPatients();
   }
 
+  dateConversion(date:string){
+    let str = date; 
+    let splitted = str.split("-", 3); 
+    let day = splitted[2].substring(0,2);
+    let month = splitted[1];
+    let year = splitted[0];
+    return day + " de " + this.months[parseInt(month)] + " de " + year;
+  } 
+  
   setQuestionsIdAndValidations(fg: FormGroup, list: any[]) {
     for (let index = 0; index < list.length; index++) {
       fg.controls.questionId.get([index]).setValue(list[index].id);
@@ -150,7 +173,7 @@ export class EvaluationComponent implements OnInit {
 
   addIEtoBounderObject() {
     this.evaluation = this.ieFormGroup.value;
-    this.evaluation.therapistId = localStorage.getItem('name');
+    this.evaluation.therapistId = localStorage.getItem("user");
     this.evaluation.date = new Date().toISOString();
     this.evaluation.answers = [];
     console.log(this.evaluation)

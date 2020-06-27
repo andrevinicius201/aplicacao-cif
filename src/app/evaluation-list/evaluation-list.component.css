@@ -1,0 +1,13 @@
+table {
+    width: 95%;
+    margin: 1em;
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #E4022D;
+}
+
+.spinner {
+    margin-top: 30%;
+}
