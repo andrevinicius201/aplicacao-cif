@@ -11,7 +11,12 @@ import { PatientListService } from '../service/patient-list.service';
 import { Evaluation } from '../interfaces/evaluation';
 import { Answer } from '../interfaces/answer';
 import { EvaluationService } from '../service/evaluation.service';
+
+declare const require: any;
+const jsPDF = require('jspdf');
+require('jspdf-autotable');
 declare var xepOnline: any;
+
 @Component({
   selector: 'app-evaluation',
   templateUrl: './evaluation.component.html',
@@ -87,8 +92,6 @@ export class EvaluationComponent implements OnInit {
     } else {
       this.ieFormGroup = this.createieFormGroup();
     }
-    // this.bsFormGroup = this.createbsFormGroup();
-    // this.bfFormGroup = this.createbfFormGroup();
   }
 
   ngOnInit(): void {
@@ -150,9 +153,62 @@ export class EvaluationComponent implements OnInit {
 
   download(){
     var file = "Avaliação Funcional - " + this.evaluation.patientId;
-    this.newEvaluation();
+    //this.newEvaluation();
     return xepOnline.Formatter.Format('print', {render:'download', filename: file});
   }
+  
+  public openPDF():void {
+    let doc = new jsPDF('p','pt', 'a4');
+    // TITLE
+    doc.setFontType("bold")
+    doc.setFontSize(24);
+    doc.setFont("Roboto");
+    doc.text("Relatório de Classificação Funcional", 120,40);
+    doc.line(10,55,585,55);
+    // TITLE END
+
+    // HEADER
+    doc.setFontSize(16);
+    doc.text("Paciente: ",20,80);
+    doc.setFontType("normal");
+    doc.text(this.findName(this.evaluation.patientId),90,80);
+
+    doc.setFontType("bold");
+    doc.setFontSize(16);
+    doc.text("Data: ",350,80);
+    doc.setFontType("normal");
+    doc.text(this.dateConversion(this.evaluation.date),390,80);
+
+    doc.setFontType("bold");
+    doc.setFontSize(16);
+    doc.text("Terapeuta: ",20,110);
+    doc.setFontType("normal");
+    doc.text(localStorage.getItem("name"),100,110);
+
+    doc.setFontType("bold");
+    doc.setFontSize(16);
+    doc.text("Local: ",350,110);
+    doc.setFontType("normal");
+    doc.text(this.evaluation.location,395,110);
+
+    doc.line(10,120,585,120);
+
+    doc.autoTable({
+      head: [['Name', 'Email', 'Country']],
+      body: [
+        ['David', 'david@example.com', 'Sweden'],
+        ['Castille', 'castille@example.com', 'Norway']
+      ],
+    });
+
+    doc.save('asassa.pdf');
+  }
+
+  findName(id:String){
+    var item = this.patients.find(i => i.id == id);
+    return item != undefined ? item.firstName+" "+item.lastName : null;
+  }
+  
 
   newEvaluation(){
     this.loading = true;

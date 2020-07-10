@@ -38,6 +38,20 @@ h3 {
     border-color: #f44336;
 }
 
+#grade-bar {
+    width: 150px;
+    border: 1px solid black;
+    height: 25px;
+    border-radius: 4px;
+}
+
+#grade-bar-colored {
+    width: 60px;
+    background-color: #f44336;
+    height: 23px;
+    border-radius: 4px;
+}
+
 .spinner {
     margin-top: 30%;
 }

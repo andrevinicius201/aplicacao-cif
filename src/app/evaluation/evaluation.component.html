@@ -585,7 +585,7 @@
         <div class="mb-5 flex" *ngIf="!loading">
             <button mat-button mat-stroked-button matStepperPrevious color="warn" class="mx-auto">Voltar</button>
             <button mat-button mat-stroked-button (click)="newEvaluation()" color="warn" class="mx-auto">Salvar</button>
-            <button mat-button mat-stroked-button (click)="download()" color="warn" class="mx-auto">Baixar</button>
+            <button mat-button mat-stroked-button (click)="openPDF()" color="warn" class="mx-auto">Baixar</button>
         </div>
         <div *ngIf="loading" fxLayoutAlign="center">
             <mat-spinner></mat-spinner>
@@ -601,6 +601,7 @@
 
             </div>
             <hr>
+
             <h4 matTooltip="{{stepTwo}}">{{stepTwo}}</h4>
             <div *ngFor="let question of environmentalFactors">
                 <div class="border rounded mb-3" *ngIf=" getAnswerGrade(question) !=undefined ">
